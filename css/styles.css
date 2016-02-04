@@ -1,0 +1,591 @@
+/********************* Colour reference chart****************
+
+background color    #e5e5e5
+box color           #f4f4f4
+    darker          #d6d6d6
+blue(Today_line)    #4a639b
+blue2(Today_line)   #27bdfa
+green(Today_line)   #adc259
+
+main: red            #de4349
+    main: red_dr     #c53a3f
+
+sub: green           #5fc073
+    sub: green_dr    #50a361
+
+sub: blue            #67c5eb
+    sub: blue_dr     #55a3c2
+
+sub: purple          #a981bf
+    sub: purple_dr   #9068a6
+
+sub: orange          #fa7f00
+    sub: orange_dr   #c76500
+
+*/
+
+
+/*  SECTIONS  */
+
+.section {
+    clear: both;
+    padding: 0px;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+
+/*  COLUMN SETUP  */
+
+.col {
+    display: block;
+    float: left;
+    margin: 1% 0 1% 1.6%;
+}
+
+.col:first-child {
+    margin-left: 0;
+}
+
+
+/*  GROUPING  */
+
+.group:before,
+.group:after {
+    content: "";
+    display: table;
+}
+
+.group:after {
+    clear: both;
+}
+
+.group {
+    zoom: 1;
+    /* For IE 6/7 */
+}
+
+
+/*  GRID OF THREE  */
+
+.span-3-of-3 {
+    width: 100%;
+}
+
+.span-2-of-3 {
+    width: 66.13%;
+}
+
+.span-1-of-3 {
+    width: 32.26%;
+}
+
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+
+@media only screen and (max-width: 480px) {
+    .col {
+        margin: 1% 0 1% 0%;
+    }
+    .span-3-of-3,
+    .span-2-of-3,
+    .span-1-of-3 {
+        width: 100%;
+    }
+}
+
+
+/*/////////////////////////////OWN CSS///////////////////////////////////*/
+
+@font-face {
+    font-family: 'telegrafico';
+    src: url('fonts/telegrafico/telegrafico.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'minimal';
+    src: url('fonts/simplifica/simple.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'open-sans';
+    src: url('fonts/open-sans/openSans-regular.ttf') format('truetype');
+}
+
+.tab {
+    width: 40px;
+}
+
+body {
+    margin: 0px;
+    background: #e5e5e5;
+}
+
+
+/* Header */
+
+.header {
+    position: relative;
+    height: 50px;
+    background-color: #de4349;
+    border-bottom: 2px solid #c53a3f;
+}
+
+#logo {
+    margin-left: 15px;
+    position: absolute;
+    top: 5%;
+    height: 46px;
+    width: 46px;
+}
+
+#user {
+    position: absolute;
+    margin-left: 60px;
+    top: 15px;
+    color: white;
+    font-family: minimal;
+    font-size: 16pt;
+}
+
+#create-event {
+    margin-right: 10px;
+    padding-top: 15px;
+    float: right;
+}
+
+#create-event-btn {
+    color: white;
+    font-family: minimal;
+    font-size: 16pt;
+    text-decoration: none;
+}
+
+#seperator {
+    margin-top: 5px;
+    margin-right: 10px;
+    float: right;
+    height: 40px;
+    border-left: 2px solid #c53a3f;
+}
+
+#today {
+    margin-right: 15px;
+    padding-top: 15px;
+    float: right;
+}
+
+#today-btn {
+    color: white;
+    font-family: minimal;
+    font-size: 16pt;
+    text-decoration: none;
+}
+
+
+/* Today Widget */
+
+.today-widget {
+    height: 300px;
+    background-color: #f4f4f4;
+    margin-bottom: 20px;
+}
+
+.date-today {
+    height: 150px;
+    border-bottom: 2px solid #d6d6d6;
+}
+
+.date-today #day {
+    padding-top: 20px;
+    margin-left: 5%;
+    margin-right: 3%;
+    float: left;
+    color: #de4349;
+    font-family: minimal;
+    font-size: 80pt;
+}
+.date-today #name-day {
+    line-height: 70pt;
+    font-size : 50pt;
+    font-family: minimal;
+}
+
+.date-today #month-year {
+    line-height: 15pt;
+    color: #de4349;
+    font-size : 50pt;
+    font-family: minimal;
+}
+
+.clock {
+    padding-top: 12px;
+    width: 50%;
+    margin: 0 auto; 
+    text-align: center;
+}
+
+.clock #time { 
+    font-size: 90pt;
+    font-family: minimal
+}
+
+/* Upcoming Events */
+
+.upcoming-events {
+    height: auto;
+    background-color: #f4f4f4;
+}
+
+#headerwidget {
+    height: 50px;
+    border-bottom: 2px solid #d6d6d6;
+    display:                 flex;
+    flex-wrap:               wrap;
+    justify-content:         center;
+}
+
+#headerw-title {
+    padding-top: 10px;
+    color: #de4349;
+    font-family: minimal;
+    font-size: 25pt;
+    width: 85%;
+    text-align: center;
+}
+
+.previous-btn {
+    font-family: minimal;
+    font-size: 40pt;
+    text-decoration: none;
+}
+
+.next-btn {
+    font-family: minimal;
+    font-size: 40pt;
+    text-decoration: none;
+}
+
+.active {
+    color: #de4349;
+}
+
+.disabled {
+    color: #d6d6d6;
+    cursor: default;
+}
+
+#eventlist {
+    margin-top: 0.5%;
+    padding: 0;
+}
+
+#eventlist li {
+    list-style-type: none;
+}
+
+.eventbox  {
+    height: 75px;
+    
+}
+
+.time-event {
+    float: left;
+    margin-top: 12px;
+    margin-left: 2%;
+    font-family: minimal;
+    white-space: nowrap;
+    width: 15%;
+    font-size: 35pt;
+    text-align: center;
+    color: white;
+}
+
+.seperator-event {
+    float: left;
+    margin-top: 10px;
+    margin-left: 5%;
+    height: 55px;
+    border: 1px solid white;
+}
+
+.information-event {
+    float: left;
+    margin-top: 15px;
+    margin-left: 2%;
+    font-family: minimal;
+    font-size: 18pt;
+    line-height: 25px;
+    color: white;
+}
+
+.title-event {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+.date-event {
+    font-size: 24pt;
+}
+
+.red {
+    background-color: #de4349;
+    border-bottom: 3px solid #c53a3f;
+}
+.green {
+    background-color: #5fc073;
+    border-bottom: 3px solid #50a361;
+}
+
+.blue {
+    background-color: #67c5eb;
+    border-bottom: 3px solid #55a3c2;
+}
+
+.purple {
+    background-color: #a981bf;
+    border-bottom: 3px solid #9068a6;
+}
+
+.orange {
+    background-color: #fa7f00;
+    border-bottom: 3px solid #c76500;
+}
+
+
+/* Calender */
+
+.calender-widget {
+    height: 800px;
+    background-color: #f4f4f4;
+    margin-bottom: 20px;
+}
+
+
+/*///////////////////////Pop-Up/////////////////////////////*/
+
+.cover {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+.blur-in {
+    -webkit-animation: blur 2s forwards;
+    -moz-animation: blur 2s forwards;
+    -o-animation: blur 2s forwards;
+    animation: blur 2s forwards;
+}
+
+.blur-out {
+    -webkit-animation: blur-out 2s forwards;
+    -moz-animation: blur-out 2s forwards;
+    -o-animation: blur-out 2s forwards;
+    animation: blur-out 2s forwards;
+}
+
+.pop-up {
+    position: fixed;
+    margin-right: 30%;
+    margin-left: 30%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.box {
+    background-color: #fbfbfb;
+    margin-top: 35%;
+    position: relative;
+    -webkit-box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
+}
+
+.close-button {
+    transition: all 0.5s ease;
+    position: absolute;
+    background-color: #de4349;
+    padding: 2px 7px;
+    left: 0;
+    margin-left: -10px;
+    margin-top: -15px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    text-decoration: none;
+    color: white;
+    -webkit-box-shadow: -4px -2px 6px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: -4px -2px 6px 0px rgba(0,0,0,0.1);
+    box-shadow: -3px 1px 6px 0px rgba(0,0,0,0.1);
+}
+
+.event-creator {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin: 2%;
+}
+
+.event-creator #create-form {
+    font-family: open-sans;
+    font-size: 12pt;
+}
+
+.event-creator #submit-btn {
+    margin-top: -25px;
+    float: right;
+    background-color: #de4349;
+	border: 2px solid #de4349;
+    
+	font-family: 'open-sans';
+	font-size: 15px;
+	color: #FFF;
+}
+.event-creator #submit-btn:hover {
+    background-color: #c53a3f;
+}
+
+/*///////////////BLUR ANIMATION//////////////*/
+@-webkit-keyframes blur {
+    0% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+
+    100% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+}
+
+@-moz-keyframes blur {
+    0% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+
+    100% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+}
+
+@-o-keyframes blur {
+    0% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+
+    100% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+}
+
+@keyframes blur {
+    0% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+
+    100% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+}
+
+@-webkit-keyframes blur-out {
+    0% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+
+    100% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+}
+
+@-moz-keyframes blur-out {
+    0% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+
+    100% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+}
+
+@-o-keyframes blur-out {
+    0% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+
+    100% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+}
+
+@keyframes blur-out {
+    0% {
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
+
+    100% {
+        -webkit-filter: blur(0px);
+        -moz-filter: blur(0px);
+        -o-filter: blur(0px);
+        -ms-filter: blur(0px);
+        filter: blur(0px);
+    }
+}

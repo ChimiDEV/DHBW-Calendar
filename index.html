@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="javascript/script.js" type="text/javascript"></script> 
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
+    
+    <title>Calendar</title>
+</head>
+
+<body>
+<div id="overlay" class="cover blur-in">
+    
+    <!---- Header ---->
+    <div class="header">
+        <div id="logo"><img src="img/cal_logo.png"></img></div>
+        <div id="user"></div>
+        <div id="today"><a class="btn" id="today-btn" href="#">Today</a></div>
+        <div id="seperator"></div>
+        <div id="create-event"><a class="btn" id="create-event-btn" href="#">Create Event</a></div>
+    </div>
+
+    <div class="section group">
+        <div class="col span-1-of-3">
+            
+    <!---- Today Widget ---->
+            <div class="today-widget">
+                <div class="date-today">
+                    <div id="day">29</div>
+                    <div class="day-month-year">
+                        <span id="name-day"></span> <br>
+                        <span id="month-year"></span>
+                    </div>
+                </div>
+                <div class="clock">
+                    <div id="time"></div>
+                </div>
+            </div>
+
+            <div class="upcoming-events">
+                <div id="headerwidget">
+                        <div class="previous"><a href='#' class="previous-btn active" id="prev-btn"> < </a></div>
+                        <div id="headerw-title">Upcoming Events</div>
+                        <div class="next"><a href='#' class="next-btn active" id="next-btn"> > </a></div>
+                </div>
+                <ul id="eventlist">
+                    <li>
+                        <div class="eventbox red">
+                        <div class="time-event">All-Day</div>
+                        <div class="seperator-event"></div>
+                        <div class="information-event">
+                                <span class="title-event">Bild-Test </span>
+                                <span class="date-event">| 3.März 2016</span> <br>
+                                <span class="timeend-event">until 11:59, </span>
+                                <span class="location-event">Somewhere</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="eventbox green">
+                        <div class="time-event">10:00</div>
+                        <div class="seperator-event"></div>
+                        <div class="information-event">
+                                <span class="title-event">Geburtstag </span>
+                                <span class="date-event">| 3.März 2016</span> <br>
+                                <span class="timeend-event">until 11:59, </span>
+                                <span class="location-event">Somewhere</span>
+                        </div>
+                        </div>
+                    </li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>  
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
+                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li> 
+                </ul>
+            </div>
+        </div>
+        <div class="col span-2-of-3">
+            <div class="calender-widget">
+                <div id="calendar"></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+    
+    <!---- Pop Up Dialog boxes ---->
+    <div class="pop-up">
+        <div class="box">
+        <a href="#" class="close-button">&#10006;</a>
+            <div class="event-creator">
+            <form id="create-form" action="">
+                Eventname:  <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required> <br>
+                Date:        <input type="date" name="date" value="2016-01-01" required>
+                Time:       <input type="time" name="time-start" value="00:00" required>
+                            <input type="time" name="time-end" value="23:59" required> <br>
+                All Day:    <input type="checkbox" name="allday" value="1">  <br>
+                Location:   <input type="text" name="location" placeholder="Office" maxlength="50"> <br>
+                People:     <input type="email" name="organizer" placeholder="johndoe@office.com" maxlength="50" required> <br>
+                Webpage:    <input type="url" name="webpage" placeholder="http://example.com" maxlength="100"> <br>
+                Status:     <select name"status"><option selected>Free </option><option>Tentative</option><option>Busy</option></select> <br>
+                Category: <br>
+                Image:      <input type="file" name="imageurl"> <br>
+                <input id="submit-btn" type="submit" value="Submit">               
+            </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
