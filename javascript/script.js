@@ -140,20 +140,18 @@ var main = function () {
         end = "until 23:00";
         
     $('#today-btn').click(function() {
-        $('<li>').attr('id', id).appendTo('#eventlist');
-        $('<div>').attr('class','eventbox red').attr('id', idDiv).appendTo('#'+id+'');
-        $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
+    
+        $('<li>').appendTo('#eventlist');
+        $('<div>').attr('class','eventbox red').appendTo('#eventlist li:visible:last');
+       /* $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
         $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
         $('<div>').attr('class', 'information-event').attr('id', idInfo).appendTo('#'+idDiv+'');
             $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInfo+'');
             $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInfo+'');
             $('<br>').appendTo('#'+idInfo+'');
             $('<span>').attr('class', 'timeend-event').text(end).appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInfo+'');
-        id++;
-        idDiv++;
-        idInfo--;
-    $('#eventlist li:gt(4)').hide();
+            $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInfo+''); */
+        $('#eventlist li:gt(4)').hide();
     });            
 };
 
