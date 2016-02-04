@@ -24,7 +24,6 @@ sub: orange          #fa7f00
 
 */
 
-
 /*  SECTIONS  */
 
 .section {
@@ -309,6 +308,12 @@ body {
     border: 1px solid white;
 }
 
+@media only screen and (max-width: 1400px) {
+    .seperator-event {
+        margin-left: 10%;
+    }
+}
+
 .information-event {
     float: left;
     margin-top: 15px;
@@ -421,8 +426,8 @@ body {
 }
 
 .event-creator {
-    padding-top: 1%;
-    padding-bottom: 1%;
+    padding-top: 2%;
+    padding-bottom: 2%;
     margin: 2%;
 }
 
@@ -432,7 +437,7 @@ body {
 }
 
 .event-creator #submit-btn {
-    margin-top: -25px;
+    margin-top: -30px;
     float: right;
     background-color: #de4349;
 	border: 2px solid #de4349;

@@ -20,10 +20,10 @@ var main = function () {
                 h = checkData(date.getHours()),
                 m = checkData(date.getMinutes());
     
-            document.getElementById('day').innerHTML = d;
-            document.getElementById('time').innerHTML = h + ":" + m;
-            document.getElementById('name-day').innerHTML = days[day] + ',';
-            document.getElementById('month-year').innerHTML = months[month] + ' ' + year;
+            $('#day').text(d);
+            $('#time').text(h + ":" + m);
+            $('#name-day').text(days[day] + ',');
+            $('#month-year').text(months[month] + ' ' + year);
         
             t = setTimeout(function () {
             clock()
@@ -65,18 +65,38 @@ var main = function () {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
     
-/* SERVER COMMUNICATION  
-    $('XX').click(function() {
+/* SERVER COMMUNICATION */ 
+ /*  var eventList = function() {
         $.ajax({
         url: "http://host.bisswanger.com/dhbw/calendar.php",
         data: {user: "ramon", action: "list", format: "json"},
         dataType: "json",
         success: function(data) {
-            var event = data.events;
-            $('<span>').text(event.events[0].title).appendTo('#calendar');
+            var eventElemtens = data.events.length;
+                var id = 1234,
+                    idDiv = 1,
+                    idInfo = -1,
+                    title = "TEST,",
+                    eventLocation = "test",
+                    starttime = "20:00",
+                    d = 30, 
+                    month = 'March',
+                    year = 2016,
+                    date = d + "." + month + " " + year,
+                    end = "until 23:00";
             
+            $('<li>').appendTo('#eventlist');
+        $('<div>').attr('class','eventbox red').appendTo('#eventlist li:visible:last');
+        $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
+        $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
+        $('<div>').attr('class', 'information-event').attr('id', idInfo).appendTo('#'+idDiv+'');
+            $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInfo+'');
+            $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInfo+'');
+            $('<br>').appendTo('#'+idInfo+'');
+            $('<span>').attr('class', 'timeend-event').text(end).appendTo('#'+idInfo+'');
+            $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInfo+''); 
             }
-        });
+        }); 
         
     }); */
     
@@ -126,32 +146,19 @@ var main = function () {
  
     
 /* APPEND EVENT TO  */
-    
-    var id = 1234,
-        idDiv = 1,
-        idInfo = -1,
-        title = "TEST,",
-        eventLocation = "test",
-        starttime = "20:00",
-        d = 30, 
-        month = 'March',
-        year = 2016,
-        date = d + "." + month + " " + year,
-        end = "until 23:00";
+
         
     $('#today-btn').click(function() {
-    
-        $('<li>').appendTo('#eventlist');
-        $('<div>').attr('class','eventbox red').appendTo('#eventlist li:visible:last');
-       /* $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
-        $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
-        $('<div>').attr('class', 'information-event').attr('id', idInfo).appendTo('#'+idDiv+'');
-            $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInfo+'');
-            $('<br>').appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'timeend-event').text(end).appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInfo+''); */
-        $('#eventlist li:gt(4)').hide();
+        var start = "2015-03-30T08:00";
+        function b(str) {
+            var parts = str.split('-');
+            return parts;
+        }
+        test = b(start);
+        var test2 = new Date(start); 
+        month = test2.getMonth();
+        console.log(month);
+        
     });            
 };
 
