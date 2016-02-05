@@ -85,9 +85,9 @@ var eventsCall = function () {
                         end = new Date(eventProp[i].end),
                         endText = "until " + checkData(end.getHours()) + ":" + checkData(end.getMinutes()) + ", ",
                         color = ["red", "green", "blue", "purple", "orange"],
-                        colorID = Math.floor((Math.random() * 4) + 1);
+                        colorID = Math.floor(Math.random() * 5);
 
-                console.log(starthour);
+                
                 $('<li>').attr('id', id).appendTo('#eventlist');
                     $('<div>').attr('class','eventbox ' + color[colorID]).attr('id', idDiv).appendTo('#'+id+'');
                     $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
@@ -136,21 +136,20 @@ var eventsCall = function () {
     
 //////////////////////////////////////////////////////////////////////////////////////////////
  
-/* Create Event */
-    $('.pop-up').hide();
+/* Create Event PopUp */
+    $('.pop-up ').hide();
     $('#overlay').removeClass('blur-in');
     
-
     $('#create-event-btn').click(function (e) {
-       $('.pop-up').fadeIn(1000);
+        $('.createEvent').fadeIn(1000);
         $('#overlay').removeClass('blur-out');
         $('#overlay').addClass('blur-in');
         e.stopPropagation();
     });
-    
   
     $('.close-button').click(function (e) {
-        $('.pop-up').fadeOut(700);
+        $('.createEvent').fadeOut(700);
+        $('.showEvent').fadeOut(700);
         $('#overlay').removeClass('blur-in');
         $('#overlay').addClass('blur-out');
         e.stopPropagation();
@@ -158,12 +157,52 @@ var eventsCall = function () {
     
     $('#create-form').submit(function (e) {
         e.preventDefault();
-        $('.pop-up').fadeOut(700);
+        $('.createEvent').fadeOut(700);
         $('#overlay').removeClass('blur-in');
         $('#overlay').addClass('blur-out');
         e.stopPropagation();
     });
-
+    
+/* Event PopUp */
+    $("#eventlist").on("click", "li", function(e) {
+        var index =  $(this).index();
+        var classes = $('#'+(index+1)+'').attr("class");
+        console.log(index);
+        console.log(classes);
+        var color = classes.split(" ");
+        $('.showEvent').fadeIn(1000);
+        $('#overlay').removeClass('blur-out');
+        $('#overlay').addClass('blur-in');
+        e.stopPropagation();
+        
+        $.ajax({
+            url: "http://host.bisswanger.com/dhbw/calendar.php",
+            data: {user: "6334355", action: "list", format: "json"},
+            dataType: "json",
+            success: function(data) {
+                var eventProp = data.events.events,
+                    id = eventProp[index].id,
+                    title = eventProp[index].title,
+                    eventLocation = eventProp[index].location,
+                    eventOrganizer = eventProp[index].organizer,
+                    eventStatus = eventProp[index].status,
+                    eventAllDay = eventProp[index].allday,
+                    eventPage = eventProp[index].webpage,
+                    start = new Date(eventProp[index].start),
+                    starthour = start.getHours(),
+                    startminute = start.getMinutes,
+                    starttime = checkData(start.getHours()) + ":" + checkData(start.getMinutes());
+                    d = checkData(start.getDate()),
+                    month = start.getMonth(),
+                    year = start.getFullYear(),
+                    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    date = d + "." + months[month] + " " + year;
+                console.log(color[1]);
+                
+                        
+            }
+        });
+    });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -222,66 +261,10 @@ var eventsCall = function () {
     });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /* Upcoming Events List */ 
-//var upcomingList = function () {
-    //var recheckSize = function () {
-    var size_li = $('#eventlist li').size();
-    
-    $('#eventlist li:gt(4)').hide();
-    var checkButton = function () {
-        if ($('#eventlist').children().last().is(':visible')) {
-            $('#next-btn').removeClass('active');
-            $('#next-btn').addClass('disabled');
-        } else if ($('#eventlist').children().last().is(':hidden')) {
-            $('#next-btn').removeClass('disabled');
-            $('#next-btn').addClass('active');
-        }
-
-        if ($('#eventlist').children().first().is(':visible')) {
-            $('#prev-btn').removeClass('active');
-            $('#prev-btn').addClass('disabled');
-        } else if ($('#eventlist').children().first().is(':hidden')) {
-            $('#prev-btn').removeClass('disabled');
-            $('#prev-btn').addClass('active');
-        } 
-    };
-    
-    checkButton();
-    
-    
-    $('#next-btn').click(function () {
-        var last = $('#eventlist').children('li:visible:last');
-        last.nextAll(':lt(5)').show();
-        last.next().prevAll().hide();
-        checkButton();
-        });
-    
-    $('#prev-btn').click(function() {
-        var first = $('#eventlist').children('li:visible:first');
-        first.prevAll(':lt(5)').show();
-        first.prev().nextAll().hide()
-        checkButton();
-    });
-//};
-//////////////////////////////////////////////////////////////////////////////////////////////
  
     
 /* APPEND EVENT TO  */
-
-        
- /*   $('#today-btn').click(function() {
-        var start = "2015-03-30T08:00";
-        function b(str) {
-            var parts = str.split('-');
-            return parts;
-        }
-        test = b(start);
-        var test2 = new Date(start); 
-        month = test2.getMonth();
-        console.log(month);
-        
-    });   */         
+         
 };
 
 $(document).ready(main);
