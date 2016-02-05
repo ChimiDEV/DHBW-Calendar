@@ -29,8 +29,8 @@ sub: orange          #fa7f00
 .section {
     clear: both;
     padding: 0px;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 
@@ -206,14 +206,14 @@ body {
 }
 #name-day {
     line-height: 70pt;
-    font-size : 50pt;
+    font-size : 48pt;
     font-family: minimal;
 }
 
 #month-year {
     line-height: 15pt;
     color: #de4349;
-    font-size : 50pt;
+    font-size : 48pt;
     font-family: minimal;
 }
 
@@ -364,12 +364,17 @@ body {
     .seperator-event {
         margin-left: 25px;
     }
+    .information-event {
+        font-size: 16pt;
+    }
     #name-day {
-        font-size: 45pt;
+        line-height: 70pt;
+        font-size: 42pt;
     }
     
     #month-year {
-        font-size: 45pt;
+        line-height: 5pt;
+        font-size: 42pt;
     }
 }
 

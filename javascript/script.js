@@ -16,6 +16,45 @@ var checkData = function (i) {
     return (i < 10) ? "0" + i : i;
 };   
 
+
+var upcomingList = function () {       
+    $('#eventlist li:gt(4)').hide();
+    var checkButton = function () {
+        if ($('#eventlist').children().last().is(':visible')) {
+            $('#next-btn').removeClass('active');
+            $('#next-btn').addClass('disabled');
+        } else if ($('#eventlist').children().last().is(':hidden')) {
+            $('#next-btn').removeClass('disabled');
+            $('#next-btn').addClass('active');
+        }
+
+        if ($('#eventlist').children().first().is(':visible')) {
+            $('#prev-btn').removeClass('active');
+            $('#prev-btn').addClass('disabled');
+        } else if ($('#eventlist').children().first().is(':hidden')) {
+            $('#prev-btn').removeClass('disabled');
+            $('#prev-btn').addClass('active');
+        } 
+    };
+    
+    checkButton();
+    
+    
+    $('#next-btn').click(function () {
+        var last = $('#eventlist').children('li:visible:last');
+        last.nextAll(':lt(5)').show();
+        last.next().prevAll().hide();
+        checkButton();
+    });
+    
+    $('#prev-btn').click(function() {
+        var first = $('#eventlist').children('li:visible:first');
+        first.prevAll(':lt(5)').show();
+        first.prev().nextAll().hide()
+        checkButton();
+    });
+}
+
 var main = function () {
 
 // Eventliste abrufen
@@ -25,41 +64,45 @@ var eventsCall = function () {
     data: {user: "6334355", action: "list", format: "json"},
     dataType: "json",
     success: function(data) {
-        var i,
-            eventElemtens = data.events.events.length;
+            var i,
+                eventElemtens = data.events.events.length;
 
-        for (i=0; i < eventElemtens; i++) {
-                var eventProp = data.events.events,
-                    id = eventProp[i].id,
-                    title = eventProp[i].title,
-                    eventLocation = eventProp[i].location,
-                    start = new Date(eventProp[i].start),
-                    starthour = start.getHours(),
-                    startminute = start.getMinutes,
-                    starttime = checkData(start.getHours()) + ":" + checkData(start.getMinutes()),
-                    d = checkData(start.getDate()),
-                    month = start.getMonth(),
-                    year = start.getFullYear(),
-                    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    date = " | " + d + "." + months[month] + " " + year,
-                    end = new Date(eventProp[i].end),
-                    endText = "until " + checkData(end.getHours()) + ":" + checkData(end.getMinutes()) + ", ",
-                    color = ["red", "green", "blue", "purple", "orange"];
+            $('#eventlist li').remove();
+            for (i=0; i < eventElemtens; i++) {
+                    var eventProp = data.events.events,
+                        id = eventProp[i].id,
+                        title = eventProp[i].title,
+                        eventLocation = eventProp[i].location,
+                        start = new Date(eventProp[i].start),
+                        starthour = start.getHours(),
+                        startminute = start.getMinutes,
+                        starttime = checkData(start.getHours()) + ":" + checkData(start.getMinutes()),
+                        d = checkData(start.getDate()),
+                        month = start.getMonth(),
+                        year = start.getFullYear(),
+                        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        date = " | " + d + "." + months[month] + " " + year,
+                        end = new Date(eventProp[i].end),
+                        endText = "until " + checkData(end.getHours()) + ":" + checkData(end.getMinutes()) + ", ",
+                        color = ["red", "green", "blue", "purple", "orange"],
+                        colorID = Math.floor((Math.random() * 4) + 1);
 
-            $('<li>').attr('id', id).appendTo('#eventlist');
-                $('<div>').attr('class','eventbox ' + color[i]).attr('id', idDiv).appendTo('#'+id+'');
-                $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
-                $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
-                $('<div>').attr('class', 'information-event').attr('id', idInf).appendTo('#'+idDiv+'');
-                    $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInf+'');
-                    $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInf+'');
-                    $('<br>').appendTo('#'+idInf+'');
-                    $('<span>').attr('class', 'timeend-event').text(endText).appendTo('#'+idInf+'');
-                    $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInf+'');
+                console.log(starthour);
+                $('<li>').attr('id', id).appendTo('#eventlist');
+                    $('<div>').attr('class','eventbox ' + color[colorID]).attr('id', idDiv).appendTo('#'+id+'');
+                    $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
+                    $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
+                    $('<div>').attr('class', 'information-event').attr('id', idInf).appendTo('#'+idDiv+'');
+                        $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInf+'');
+                        $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInf+'');
+                        $('<br>').appendTo('#'+idInf+'');
+                        $('<span>').attr('class', 'timeend-event').text(endText).appendTo('#'+idInf+'');
+                        $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInf+'');
 
-                idDiv++;
-                idInf--;
+                    idDiv++;
+                    idInf--;
             }
+        upcomingList();
         }
     });
 }
@@ -172,7 +215,7 @@ var eventsCall = function () {
                 success: function(msg) {
                     console.log(msg);
                     console.log(start)
-                    $('#eventlist li:gt(4)').hide();
+                    eventsCall();
                     
                 } 
         });
@@ -183,10 +226,8 @@ var eventsCall = function () {
     /* Upcoming Events List */ 
 //var upcomingList = function () {
     //var recheckSize = function () {
-        var size_li = $('#eventlist li').size();
+    var size_li = $('#eventlist li').size();
     
-    
-        
     $('#eventlist li:gt(4)').hide();
     var checkButton = function () {
         if ($('#eventlist').children().last().is(':visible')) {
