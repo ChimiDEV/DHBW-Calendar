@@ -1,14 +1,74 @@
+var idDiv = 1;
+var idInf = -1;
+
+
+    var checkAllDay = function () {
+    if ($('#allday:checked')) {
+        $('#start').val("00:00").attr("readonly", true);
+        $('#end').val("23:59").attr("readonly", true);
+    } else {
+        $('#start').attr("readonly", false);
+        $('#end').attr("readonly", false);
+    }
+}
+    
+var checkData = function (i) {
+    return (i < 10) ? "0" + i : i;
+};   
+
 var main = function () {
+
+// Eventliste abrufen
+var eventsCall = function () {
+    $.ajax({
+    url: "http://host.bisswanger.com/dhbw/calendar.php",
+    data: {user: "6334355", action: "list", format: "json"},
+    dataType: "json",
+    success: function(data) {
+        var i,
+            eventElemtens = data.events.events.length;
+
+        for (i=0; i < eventElemtens; i++) {
+                var eventProp = data.events.events,
+                    id = eventProp[i].id,
+                    title = eventProp[i].title,
+                    eventLocation = eventProp[i].location,
+                    start = new Date(eventProp[i].start),
+                    starthour = start.getHours(),
+                    startminute = start.getMinutes,
+                    starttime = checkData(start.getHours()) + ":" + checkData(start.getMinutes()),
+                    d = checkData(start.getDate()),
+                    month = start.getMonth(),
+                    year = start.getFullYear(),
+                    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    date = " | " + d + "." + months[month] + " " + year,
+                    end = new Date(eventProp[i].end),
+                    endText = "until " + checkData(end.getHours()) + ":" + checkData(end.getMinutes()) + ", ",
+                    color = ["red", "green", "blue", "purple", "orange"];
+
+            $('<li>').attr('id', id).appendTo('#eventlist');
+                $('<div>').attr('class','eventbox ' + color[i]).attr('id', idDiv).appendTo('#'+id+'');
+                $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
+                $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
+                $('<div>').attr('class', 'information-event').attr('id', idInf).appendTo('#'+idDiv+'');
+                    $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInf+'');
+                    $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInf+'');
+                    $('<br>').appendTo('#'+idInf+'');
+                    $('<span>').attr('class', 'timeend-event').text(endText).appendTo('#'+idInf+'');
+                    $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInf+'');
+
+                idDiv++;
+                idInf--;
+            }
+        }
+    });
+}
         
     var user = "TimWalter";
     var Mat = 6334355;
     $( "#user").append(user+" // Matrikelnummer: "+Mat);
     
 /* CLOCK FUNCTION */
-    var checkData = function (i) {
-        return (i < 10) ? "0" + i : i;
-    };
-    
     var clock = function () {
             var date = new Date(),
                 year = date.getFullYear(),
@@ -55,57 +115,78 @@ var main = function () {
     
     $('#create-form').submit(function (e) {
         e.preventDefault();
-        var event = $("#create-form :input").serializeArray();
-        console.log(event);
         $('.pop-up').fadeOut(700);
         $('#overlay').removeClass('blur-in');
         $('#overlay').addClass('blur-out');
         e.stopPropagation();
     });
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////
     
 /* SERVER COMMUNICATION */ 
- /*  var eventList = function() {
-        $.ajax({
-        url: "http://host.bisswanger.com/dhbw/calendar.php",
-        data: {user: "ramon", action: "list", format: "json"},
-        dataType: "json",
-        success: function(data) {
-            var eventElemtens = data.events.length;
-                var id = 1234,
-                    idDiv = 1,
-                    idInfo = -1,
-                    title = "TEST,",
-                    eventLocation = "test",
-                    starttime = "20:00",
-                    d = 30, 
-                    month = 'March',
-                    year = 2016,
-                    date = d + "." + month + " " + year,
-                    end = "until 23:00";
-            
-            $('<li>').appendTo('#eventlist');
-        $('<div>').attr('class','eventbox red').appendTo('#eventlist li:visible:last');
-        $('<div>').attr('class', 'time-event').text(starttime).appendTo('#'+idDiv+'');
-        $('<div>').attr('class', 'seperator-event').appendTo('#'+idDiv+'');
-        $('<div>').attr('class', 'information-event').attr('id', idInfo).appendTo('#'+idDiv+'');
-            $('<span>').attr('class', 'title-event').text(title).appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'date-event').text(date).appendTo('#'+idInfo+'');
-            $('<br>').appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'timeend-event').text(end).appendTo('#'+idInfo+'');
-            $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#'+idInfo+''); 
-            }
-        }); 
-        
-    }); */
+  // Eventliste abrufen
+    eventsCall();
     
+    //Create Event
+    $('#create-form').submit(function() {
+        var myEvent = $("#create-form :input").serializeArray();
+        console.log(myEvent);
+        if (myEvent.length == 9)  {   //All-Day is checked
+            var title = myEvent[0].value,
+                location = myEvent[5].value,
+                organizer = myEvent[6].value,
+                start = myEvent[1].value + "T" + checkData(myEvent[2].value),
+                end = myEvent[1].value + "T" + checkData(myEvent[3].value),
+                status = myEvent[8].value,
+                allday = myEvent[4].value,
+                webpage = myEvent[7].value;
+        } else {                    //All-Day is unchecked
+            var title = myEvent[0].value,
+                location = myEvent[4].value,
+                organizer = myEvent[5].value,
+                start = myEvent[1].value + "T" + checkData(myEvent[2].value),
+                end = myEvent[1].value + "T" + checkData(myEvent[3].value),
+                status = myEvent[7].value,
+                allday = 0,
+                webpage = myEvent[6].value;
+        }
+            
+        $.ajax({   
+                type: "POST",
+                url: "http://host.bisswanger.com/dhbw/calendar.php",
+                data:{
+                    user: "6334355",
+                    action: "add", 
+                    format: "json",
+                    title: title,
+                    location: location,
+                    organizer: organizer,
+                    start: start,
+                    end: end,
+                    status: status,
+                    allday: allday,
+                    webpage: webpage
+                },
+                dataType: "json",
+                success: function(msg) {
+                    console.log(msg);
+                    console.log(start)
+                    $('#eventlist li:gt(4)').hide();
+                    
+                } 
+        });
+    });
+
 //////////////////////////////////////////////////////////////////////////////////////////////
     
     /* Upcoming Events List */ 
 //var upcomingList = function () {
-    var size_li = $('#eventlist li').size();
+    //var recheckSize = function () {
+        var size_li = $('#eventlist li').size();
     
+    
+        
     $('#eventlist li:gt(4)').hide();
     var checkButton = function () {
         if ($('#eventlist').children().last().is(':visible')) {
@@ -148,7 +229,7 @@ var main = function () {
 /* APPEND EVENT TO  */
 
         
-    $('#today-btn').click(function() {
+ /*   $('#today-btn').click(function() {
         var start = "2015-03-30T08:00";
         function b(str) {
             var parts = str.split('-');
@@ -159,7 +240,7 @@ var main = function () {
         month = test2.getMonth();
         console.log(month);
         
-    });            
+    });   */         
 };
 
 $(document).ready(main);

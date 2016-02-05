@@ -46,32 +46,6 @@
                         <div class="next"><a href='#' class="next-btn active" id="next-btn"> > </a></div>
                 </div>
                 <ul id="eventlist">
-                    <li>
-                        <div class="eventbox red">
-                        <div class="time-event">All-Day</div>
-                        <div class="seperator-event"></div>
-                        <div class="information-event">
-                                <span class="title-event">Bild-Test </span>
-                                <span class="date-event">| 3.März 2016</span> <br>
-                                <span class="timeend-event">until 11:59, </span>
-                                <span class="location-event">Somewhere</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="eventbox green">
-                        <div class="time-event">10:00</div>
-                        <div class="seperator-event"></div>
-                        <div class="information-event">
-                                <span class="title-event">Geburtstag </span>
-                                <span class="date-event">| 3.März 2016</span> <br>
-                                <span class="timeend-event">until 11:59, </span>
-                                <span class="location-event">Somewhere</span>
-                        </div>
-                        </div>
-                    </li>
-                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
-                    <li><div class="eventbox blue"><div class="time-event">23:50</div><div class="seperator-event"></div></li>
                 </ul>
             </div>
         </div>
@@ -93,13 +67,13 @@
             <form id="create-form" action="">
                 Eventname:  <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required> <br>
                 Date:        <input type="date" name="date" value="2016-01-01" required>
-                Time:       <input type="time" name="time-start" value="00:00" required>
-                            <input type="time" name="time-end" value="23:59" required> <br>
-                All Day:    <input type="checkbox" name="allday" value="1">  <br>
+                Time:       <input type="time" id="start" name="time-start" value="00:00" required>
+                            <input type="time" id="end" name="time-end" value="23:59" required> <br>
+                All Day:    <input type="checkbox" id="allday" name="allday" value="1" onChange="checkAllDay();">  <br>
                 Location:   <input type="text" name="location" placeholder="Office" maxlength="50"> <br>
                 People:     <input type="email" name="organizer" placeholder="johndoe@office.com" maxlength="50" required> <br>
                 Webpage:    <input type="url" name="webpage" placeholder="http://example.com" maxlength="100"> <br>
-                Status:     <select name"status"><option selected>Free </option><option>Tentative</option><option>Busy</option></select> <br> <br>
+                Status:     <select name="status" id="status"><option selected>Free</option><option>Tentative</option><option>Busy</option></select> <br> <br>
                 <!-- Category: <br> 
                 Image:      <input type="file" name="imageurl"> <br> -->
                 <input id="submit-btn" type="submit" value="Submit">               
