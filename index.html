@@ -4,98 +4,118 @@
 <head>
     <meta charset="utf-8">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="javascript/script.js" type="text/javascript"></script> 
+    <script src="javascript/script.js" type="text/javascript"></script>
     <link href="css/styles.css" rel="stylesheet" type="text/css">
-    
+
     <title>Calendar</title>
 </head>
 
 <body>
-<div id="overlay" class="cover blur-in">
-    
-    <!-- Header -->
-    <div class="header">
-        <div id="logo"><img src="img/cal_logo.png"></img></div>
-        <div id="user"></div>
-        <div id="today"><a class="btn" id="today-btn" href="#">Today</a></div>
-        <div id="seperator"></div>
-        <div id="create-event"><a class="btn" id="create-event-btn" href="#">Create Event</a></div>
-    </div>
+    <div id="overlay" class="cover blur-in">
 
-    <div class="section group">
-        <div class="col span-1-of-3">
-            
-    <!-- Today Widget -->
-            <div class="today-widget">
-                <div class="date-today">
-                    <div id="day">29</div>
-                    <div class="day-month-year">
-                        <span id="name-day"></span> <br>
-                        <span id="month-year"></span>
+        <!-- Header -->
+        <div class="header">
+            <div id="logo"><img src="img/cal_logo.png"></img>
+            </div>
+            <div id="user"></div>
+            <div id="today"><a class="btn" id="today-btn" href="#">Today</a></div>
+            <div id="seperator"></div>
+            <div id="create-event"><a class="btn" id="create-event-btn" href="#">Create Event</a></div>
+        </div>
+
+        <div class="section group">
+            <div class="col span-1-of-3">
+
+                <!-- Today Widget -->
+                <div class="today-widget">
+                    <div class="date-today">
+                        <div id="day">29</div>
+                        <div class="day-month-year">
+                            <span id="name-day"></span>
+                            <br>
+                            <span id="month-year"></span>
+                        </div>
+                    </div>
+                    <div class="clock">
+                        <div id="time"></div>
                     </div>
                 </div>
-                <div class="clock">
-                    <div id="time"></div>
-                </div>
-            </div>
 
-            <div class="upcoming-events">
-                <div id="headerwidget">
-                        <div class="previous"><a href='#' class="previous-btn active" id="prev-btn"> < </a></div>
+                <div class="upcoming-events">
+                    <div id="headerwidget">
+                        <div class="previous">
+                            <a href='#' class="previous-btn active" id="prev-btn">
+                                < </a>
+                        </div>
                         <div id="headerw-title">Upcoming Events</div>
                         <div class="next"><a href='#' class="next-btn active" id="next-btn"> > </a></div>
+                    </div>
+                    <ul id="eventlist">
+                    </ul>
                 </div>
-                <ul id="eventlist">
-                </ul>
             </div>
-        </div>
-        <div class="col span-2-of-3">
-            <div class="calender-widget">
-                <div id="calendar"></div>
+            <div class="col span-2-of-3">
+                <div class="calender-widget">
+                    <div id="calendar"></div>
 
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
-    
+
     <!-- Pop Up Dialog boxes -->
     <div class="pop-up createEvent" id>
         <div class="box">
-        <a href="#" class="close-button">&#10006;</a>
+            <a href="#" class="close-button">&#10006;</a>
             <div class="event-creator">
-            <form id="create-form" action="">
-                Eventname:  <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required> <br>
-                Date:        <input type="date" name="date" value="2016-01-01" required>
-                Time:       <input type="time" id="start" name="time-start" value="00:00" required>
-                            <input type="time" id="end" name="time-end" value="23:59" required> <br>
-                All Day:    <input type="checkbox" id="allday" name="allday" value="1" onChange="checkAllDay();">  <br>
-                Location:   <input type="text" name="location" placeholder="Office" maxlength="50"> <br>
-                People:     <input type="email" name="organizer" placeholder="johndoe@office.com" maxlength="50" required> <br>
-                Webpage:    <input type="url" name="webpage" placeholder="http://example.com" maxlength="100"> <br>
-                Status:     <select name="status" id="status"><option selected>Free</option><option>Tentative</option><option>Busy</option></select> <br> <br>
-                <!-- Category: <br> 
+                <form id="create-form" action="">
+                    Eventname:
+                    <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required>
+                    <br> Date:
+                    <input type="date" name="date" value="2016-01-01" required> Time:
+                    <input type="time" id="start" name="time-start" value="00:00" required>
+                    <input type="time" id="end" name="time-end" value="23:59" required>
+                    <br> All Day:
+                    <input type="checkbox" id="allday" name="allday" value="1" onChange="checkAllDay();">
+                    <br> Location:
+                    <input type="text" name="location" placeholder="Office" maxlength="50">
+                    <br> People:
+                    <input type="email" name="organizer" placeholder="johndoe@office.com" maxlength="50" required>
+                    <br> Webpage:
+                    <input type="url" name="webpage" placeholder="http://example.com" maxlength="100">
+                    <br> Status:
+                    <select name="status" id="status">
+                        <option selected>Free</option>
+                        <option>Tentative</option>
+                        <option>Busy</option>
+                    </select>
+                    <br>
+                    <br>
+                    <!-- Category: <br> 
                 Image:      <input type="file" name="imageurl"> <br> -->
-                <input id="submit-btn" type="submit" value="Submit">               
-            </form>
+                    <input class="submit eventbtn" type="submit" value="Submit">
+                </form>
             </div>
         </div>
     </div>
     <div class="pop-up showEvent">
         <div class="box eventUp">
-        <a href="#" class="close-button">&#10006;</a>
-        <div class="eventInformations">
-            <div class="eventHeader">
-                <span class="eventTitle">Title,</span>
-                <span class="eventLocation">Stuttgart</span>
-                <span class="eventDate">30.February 2016</span>
-            </div> 
-            <div class="eventOrganizator">Event@doe.com</div>
-            <div class="eventStatus">Tentative</div>
-            <div class="eventPage">https://google.de</div>
-            <div class="eventAllDay">All Day</div>
-            <div class="eventStart">14:00</div>
-            <div class="eventEnd">18:00</div>
+            <a href="#" class="close-button">&#10006;</a>
+            <div class="eventInformations">
+                <div class="eventHeader">
+                    <span class="eventTitle"></span>
+                    <span class="eventLocation"></span>
+                    <span class="eventDate">30.February 2016</span>
+                </div>
+                <span>Organzier: </span>
+                <div class="eventOrganizator"></div>
+                <div class="eventStatus"></div>
+                <div class="eventPage"><span>Webpage: </span><a href='#' id="eventWeb">no page</a></div>
+                <span id="eventTime-span">Time: </span>
+                <div class="eventAllDay"></div>
+                <div class="eventTime"></div>
+                <div class="eventButtons"><a href="#" class="eventbtn delEvent">Delete</a><a href="#" class="eventbtn editEvent">Edit</a></div>
             </div>
         </div>
     </div>

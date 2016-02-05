@@ -20,17 +20,18 @@ sub: purple          #a981bf
     sub: purple_dr   #9068a6
 
 sub: orange          #fa7f00
-    sub: orange_dr   #c76500
+    sub: orange_dr   #d77f00
 
 */
+
 
 /*  SECTIONS  */
 
 .section {
     clear: both;
-    padding: 0px;
-    margin-left: 1%;
     margin-right: 1%;
+    margin-left: 1%;
+    padding: 0;
 }
 
 
@@ -51,17 +52,12 @@ sub: orange          #fa7f00
 
 .group:before,
 .group:after {
-    content: "";
     display: table;
+    content: '';
 }
 
 .group:after {
     clear: both;
-}
-
-.group {
-    zoom: 1;
-    /* For IE 6/7 */
 }
 
 
@@ -84,7 +80,7 @@ sub: orange          #fa7f00
 
 @media only screen and (max-width: 900px) {
     .col {
-        margin: 1% 0 1% 0%;
+        margin: 1% 0 1% 0;
     }
     .span-3-of-3,
     .span-2-of-3,
@@ -111,12 +107,8 @@ sub: orange          #fa7f00
     src: url('fonts/open-sans/openSans-regular.ttf') format('truetype');
 }
 
-.tab {
-    width: 40px;
-}
-
 body {
-    margin: 0px;
+    margin: 0;
     background: #e5e5e5;
 }
 
@@ -126,59 +118,59 @@ body {
 .header {
     position: relative;
     height: 50px;
-    background-color: #de4349;
     border-bottom: 2px solid #c53a3f;
+    background-color: #de4349;
 }
 
 #logo {
-    margin-left: 15px;
     position: absolute;
     top: 5%;
-    height: 46px;
     width: 46px;
+    height: 46px;
+    margin-left: 15px;
 }
 
 #user {
-    position: absolute;
-    margin-left: 60px;
-    top: 15px;
-    color: white;
     font-family: minimal;
     font-size: 16pt;
+    position: absolute;
+    top: 15px;
+    margin-left: 60px;
+    color: white;
 }
 
 #create-event {
+    float: right;
     margin-right: 10px;
     padding-top: 15px;
-    float: right;
 }
 
 #create-event-btn {
-    color: white;
     font-family: minimal;
     font-size: 16pt;
     text-decoration: none;
+    color: white;
 }
 
 #seperator {
-    margin-top: 5px;
-    margin-right: 10px;
     float: right;
     height: 40px;
+    margin-top: 5px;
+    margin-right: 10px;
     border-left: 2px solid #c53a3f;
 }
 
 #today {
+    float: right;
     margin-right: 15px;
     padding-top: 15px;
-    float: right;
 }
 
 #today-btn {
-    color: white;
     font-family: minimal;
     font-size: 16pt;
     text-decoration: none;
+    color: white;
 }
 
 
@@ -186,8 +178,8 @@ body {
 
 .today-widget {
     height: 300px;
-    background-color: #f4f4f4;
     margin-bottom: 20px;
+    background-color: #f4f4f4;
 }
 
 .date-today {
@@ -196,38 +188,40 @@ body {
 }
 
 .date-today #day {
-    padding-top: 20px;
-    margin-left: 5%;
-    margin-right: 3%;
-    float: left;
-    color: #de4349;
     font-family: minimal;
     font-size: 80pt;
+    float: left;
+    margin-right: 3%;
+    margin-left: 5%;
+    padding-top: 20px;
+    color: #de4349;
 }
+
 #name-day {
-    line-height: 70pt;
-    font-size : 48pt;
     font-family: minimal;
+    font-size: 48pt;
+    line-height: 70pt;
 }
 
 #month-year {
+    font-family: minimal;
+    font-size: 48pt;
     line-height: 15pt;
     color: #de4349;
-    font-size : 48pt;
-    font-family: minimal;
 }
 
 .clock {
-    padding-top: 12px;
     width: 50%;
-    margin: 0 auto; 
+    margin: 0 auto;
+    padding-top: 12px;
     text-align: center;
 }
 
-.clock #time { 
+.clock #time {
+    font-family: minimal;
     font-size: 90pt;
-    font-family: minimal
 }
+
 
 /* Upcoming Events */
 
@@ -237,20 +231,20 @@ body {
 }
 
 #headerwidget {
+    display: flex;
     height: 50px;
     border-bottom: 2px solid #d6d6d6;
-    display:                 flex;
-    flex-wrap:               wrap;
-    justify-content:         center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #headerw-title {
-    padding-top: 10px;
-    color: #de4349;
     font-family: minimal;
     font-size: 25pt;
     width: 85%;
+    padding-top: 10px;
     text-align: center;
+    color: #de4349;
 }
 
 .previous-btn {
@@ -270,12 +264,12 @@ body {
 }
 
 .disabled {
-    color: #d6d6d6;
     cursor: default;
+    color: #d6d6d6;
 }
 
 #eventlist {
-    margin-top: 0.5%;
+    margin-top: .5%;
     padding: 0;
 }
 
@@ -284,38 +278,37 @@ body {
     cursor: pointer;
 }
 
-.eventbox  {
+.eventbox {
     height: 75px;
-    
 }
 
 .time-event {
+    font-family: minimal;
+    font-size: 35pt;
     float: left;
+    width: 15%;
     margin-top: 12px;
     margin-left: 2%;
-    font-family: minimal;
-    white-space: nowrap;
-    width: 15%;
-    font-size: 35pt;
     text-align: center;
+    white-space: nowrap;
     color: white;
 }
 
 .seperator-event {
     float: left;
+    height: 55px;
     margin-top: 10px;
     margin-left: 15px;
-    height: 55px;
     border: 1px solid white;
 }
 
 .information-event {
-    float: left;
-    margin-top: 15px;
-    margin-left: 2%;
     font-family: minimal;
     font-size: 18pt;
     line-height: 25px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 2%;
     color: white;
 }
 
@@ -330,61 +323,71 @@ body {
 
 .red {
     background-color: #de4349;
+}
+
+.border-red {
     border-bottom: 3px solid #c53a3f;
 }
 
-    .red:hover {
-        background-color: #c53a3f;
-        border-bottom: 3px solid #c53a3f;
-    }
+.red:hover {
+    background-color: #c53a3f;
+}
 
 .green {
     background-color: #5fc073;
+}
+
+.border-green {
     border-bottom: 3px solid #50a361;
 }
 
-    .green:hover {
-        background-color: #50a361;
-        border-bottom: 3px solid #50a361;
-    }
+.green:hover {
+    background-color: #50a361;
+}
 
 .blue {
     background-color: #67c5eb;
+}
+
+.border-blue {
     border-bottom: 3px solid #55a3c2;
 }
 
-    .blue:hover {
-        background-color: #55a3c2;
-        border-bottom: 3px solid #55a3c2;
-    }
+.blue:hover {
+    background-color: #55a3c2;
+}
 
 .purple {
     background-color: #a981bf;
+}
+
+.border-purple {
     border-bottom: 3px solid #9068a6;
 }
 
-    .purple:hover {
-        background-color: #9068a6;
-        border-bottom: 3px solid #9068a6;
-    }
+.purple:hover {
+    background-color: #9068a6;
+}
 
 .orange {
     background-color: #fa7f00;
-    border-bottom: 3px solid #c76500;
 }
 
-    .orange:hover {
-        background-color: #c76500;
-        border-bottom: 3px solid #c76500;
-    }
+.border-orange {
+    border-bottom: 3px solid #d77f00;
+}
+
+.orange:hover {
+    background-color: #d77f00;
+}
 
 
 /* Calender */
 
 .calender-widget {
     height: 800px;
-    background-color: #f4f4f4;
     margin-bottom: 20px;
+    background-color: #f4f4f4;
 }
 
 @media only screen and (max-width: 1676px) {
@@ -395,23 +398,23 @@ body {
         font-size: 16pt;
     }
     #name-day {
+        font-size: 42pt;
         line-height: 70pt;
-        font-size: 42pt;
     }
-    
     #month-year {
-        line-height: 5pt;
         font-size: 42pt;
+        line-height: 5pt;
     }
 }
+
 
 /*///////////////////////Pop-Up/////////////////////////////*/
 
 .cover {
-    height: 100%;
-    width: 100%;
     position: absolute;
     z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
 .blur-in {
@@ -419,6 +422,7 @@ body {
     -moz-animation: blur 2s forwards;
     -o-animation: blur 2s forwards;
     animation: blur 2s forwards;
+    pointer-events: none;
 }
 
 .blur-out {
@@ -430,47 +434,47 @@ body {
 
 .pop-up {
     position: fixed;
+    z-index: 2;
+    right: 0;
+    left: 0;
     margin-right: 30%;
     margin-left: 30%;
-    left: 0;
-    right: 0;
-    z-index: 2;
 }
 
 .box {
-    background-color: #fbfbfb;
-    margin-top: 35%;
     position: relative;
-    -webkit-box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
-    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.1);
+    margin-top: 35%;
+    background-color: #fbfbfb;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
 }
 
 .close-button {
-    transition: all 0.5s ease;
     position: absolute;
-    background-color: #de4349;
-    padding: 2px 7px;
     left: 0;
-    margin-left: -10px;
     margin-top: -15px;
-    border-radius: 50%;
-    border: 2px solid #fff;
+    margin-left: -10px;
+    padding: 2px 7px;
+    transition: all .5s ease;
     text-decoration: none;
     color: white;
-    -webkit-box-shadow: -4px -2px 6px 0px rgba(0,0,0,0.1);
-    -moz-box-shadow: -4px -2px 6px 0px rgba(0,0,0,0.1);
-    box-shadow: -3px 1px 6px 0px rgba(0,0,0,0.1);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: #de4349;
+    -webkit-box-shadow: -4px -2px 6px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: -4px -2px 6px 0 rgba(0, 0, 0, .1);
+    box-shadow: -3px 1px 6px 0 rgba(0, 0, 0, .1);
 }
 
 .close-button:hover {
-     background-color: #c53a3f;
+    background-color: #c53a3f;
 }
 
 .event-creator {
+    margin: 2%;
     padding-top: 2%;
     padding-bottom: 2%;
-    margin: 2%;
 }
 
 .event-creator #create-form {
@@ -478,43 +482,53 @@ body {
     font-size: 12pt;
 }
 
-.event-creator #submit-btn {
-    margin-top: -22px;
-    float: right;
+.submit {
+    cursor: pointer;
+    border: 3px solid #de4349;
     background-color: #de4349;
-	border: 2px solid #de4349;
-    
-	font-family: 'open-sans';
-    font-weight: bold;
-	font-size: 15px;
-	color: #FFF;
-}
-.event-creator #submit-btn:hover {
-    background-color: #c53a3f;
-    border: 2px solid #c53a3f;
 }
 
+.submit:hover {
+    border: 3px solid #c53a3f;
+    background-color: #c53a3f;
+}
+
+.eventbtn {
+    font-family: 'open-sans';
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+    float: right;
+    margin-top: -22px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.event-creator #submit-btn:hover {
+    border: 2px solid #c53a3f;
+    background-color: #c53a3f;
+}
+
+
+/* Show Event */
+
 .eventUp {
-    border-bottom: 3px solid  #de4349;
+    margin: 35% 70px 0 70px;
 }
 
 .eventInformations {
+    font-family: open-sans;
+    margin-right: 1.5%;
+    margin-left: 1.5%;
     padding-top: 15px;
     padding-bottom: 15px;
-    margin-left: 1.5%;
-    margin-right: 1.5%;
-    font-family: open-sans;
-}
-
-.eventHeader {
-    border-bottom: 1px solid #de4349;
 }
 
 .eventTitle {
     font-size: 24pt;
-    color:  #de4349;
     font-weight: bold;
     text-transform: uppercase;
+    color: #de4349;
 }
 
 .eventLocation {
@@ -528,30 +542,87 @@ body {
 }
 
 .eventOrganizator {
-    
+    font-size: 14pt;
+    display: inline-block;
+    width: 50%;
 }
 
 .eventStatus {
-    
+    font-size: 16pt;
+    font-weight: bold;
+    float: right;
 }
 
-.eventPage {
-    
+#eventWeb {
+    text-decoration: none;
+}
+
+eventtime-span {
+    display: inline-block;
+    float: left;
 }
 
 .eventAllDay {
-    
+    display: inline-block;
 }
 
-.eventStart { 
-    
+.eventTime {
+    display: inline-block;
 }
 
-.eventEnd {
-    
+.editEvent {
+    margin-right: 10px;
+    padding: 2px 10px 2px 10px;
+    text-align: center;
 }
+
+.delEvent {
+    padding: 2px 10px 2px 10px;
+}
+
+.eventred {
+    color: #de4349;
+}
+
+.eventred:hover {
+    color: #c53a3f;
+}
+
+.eventgreen {
+    color: #5fc073;
+}
+
+.eventgreen a:hover {
+    color: #50a361;
+}
+
+.eventblue {
+    color: #67c5eb;
+}
+
+.eventblue a:hover {
+    color: #55a3c2;
+}
+
+.eventpurple {
+    color: #a981bf;
+}
+
+.eventpurple a:hover {
+    color: #9068a6;
+}
+
+.eventorange {
+    color: #fa7f00;
+}
+
+.eventorange a:hover {
+    color: #d77f00;
+}
+
 
 /*///////////////BLUR ANIMATION//////////////*/
+
 @-webkit-keyframes blur {
     0% {
         -webkit-filter: blur(0px);
@@ -560,7 +631,6 @@ body {
         -ms-filter: blur(0px);
         filter: blur(0px);
     }
-
     100% {
         -webkit-filter: blur(4px);
         -moz-filter: blur(4px);
@@ -578,7 +648,6 @@ body {
         -ms-filter: blur(0px);
         filter: blur(0px);
     }
-
     100% {
         -webkit-filter: blur(4px);
         -moz-filter: blur(4px);
@@ -596,7 +665,6 @@ body {
         -ms-filter: blur(0px);
         filter: blur(0px);
     }
-
     100% {
         -webkit-filter: blur(4px);
         -moz-filter: blur(4px);
@@ -614,7 +682,6 @@ body {
         -ms-filter: blur(0px);
         filter: blur(0px);
     }
-
     100% {
         -webkit-filter: blur(4px);
         -moz-filter: blur(4px);
@@ -632,7 +699,6 @@ body {
         -ms-filter: blur(4px);
         filter: blur(4px);
     }
-
     100% {
         -webkit-filter: blur(0px);
         -moz-filter: blur(0px);
@@ -650,7 +716,6 @@ body {
         -ms-filter: blur(4px);
         filter: blur(4px);
     }
-
     100% {
         -webkit-filter: blur(0px);
         -moz-filter: blur(0px);
@@ -668,7 +733,6 @@ body {
         -ms-filter: blur(4px);
         filter: blur(4px);
     }
-
     100% {
         -webkit-filter: blur(0px);
         -moz-filter: blur(0px);
@@ -686,7 +750,6 @@ body {
         -ms-filter: blur(4px);
         filter: blur(4px);
     }
-
     100% {
         -webkit-filter: blur(0px);
         -moz-filter: blur(0px);
