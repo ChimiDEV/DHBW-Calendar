@@ -23,8 +23,9 @@ sub: orange          #fa7f00
     sub: orange_dr   #d77f00
 
 */
-
-
+:focus {
+    outline-width: 0;
+}
 /*  SECTIONS  */
 
 .section {
@@ -448,7 +449,8 @@ body {
     -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
-}
+    
+} 
 
 .close-button {
     position: absolute;
@@ -512,6 +514,10 @@ body {
 
 /* Show Event */
 
+.eventid {
+    display: none;
+}
+
 .eventUp {
     margin: 35% 70px 0 70px;
 }
@@ -529,6 +535,13 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     color: #de4349;
+}
+
+.eventEditor {
+    font-size: 16pt;
+    color: black;
+    margin-bottom: 2px;
+    border-bottom: 1px solid black;
 }
 
 .eventLocation {
@@ -570,7 +583,7 @@ eventtime-span {
     display: inline-block;
 }
 
-.editEvent {
+.editEvent, .changeEvent {
     margin-right: 10px;
     padding: 2px 10px 2px 10px;
     text-align: center;
@@ -592,7 +605,7 @@ eventtime-span {
     color: #5fc073;
 }
 
-.eventgreen a:hover {
+.eventgreen:hover {
     color: #50a361;
 }
 
@@ -600,7 +613,7 @@ eventtime-span {
     color: #67c5eb;
 }
 
-.eventblue a:hover {
+.eventblue:hover {
     color: #55a3c2;
 }
 
@@ -608,7 +621,7 @@ eventtime-span {
     color: #a981bf;
 }
 
-.eventpurple a:hover {
+.eventpurple:hover {
     color: #9068a6;
 }
 
@@ -616,10 +629,44 @@ eventtime-span {
     color: #fa7f00;
 }
 
-.eventorange a:hover {
+.eventorange:hover {
     color: #d77f00;
 }
 
+.editable-red {
+    background-color: rgba(222, 67, 73, 0.1);
+    color: rgba(222, 67, 73, 0.4);
+    border-left: 2px solid #de4349;
+    padding: 0 5px 0 5px;
+}
+
+.editable-green {
+    background-color: rgba(95, 192, 115, 0.1);
+    color: rgba(95, 192, 115, 0.4);
+    border-left: 2px solid #5fc073;
+    padding: 0 5px 0 5px;
+}
+
+.editable-blue {
+    background-color: rgba(103, 197, 235, 0.1);
+    color: rgba(103, 197, 235, 0.4);
+    border-left: 2px solid #67c5eb;
+    padding: 0 5px 0 5px;
+}
+
+.editable-purple {
+    background-color: rgba(169, 129, 191, 0.1);
+    color: rgba(169, 129, 191, 0.4);
+    border-left: 2px solid #a981bf;
+    padding: 0 5px 0 5px;
+}
+
+.editable-orange {
+    background-color: rgba(250, 127, 0, 0.1);
+    color: rgba(250, 127, 0, 0.4);
+    border-left: 2px solid #fa7f00;
+    padding: 0 5px 0 5px;
+}
 
 /*///////////////BLUR ANIMATION//////////////*/
 
