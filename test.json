@@ -1,1 +1,91 @@
-{"events":{"user":"6334355", "events":[{"id":"69837", "title":"Eventname", "location":"Test", "organizer":"Event@doe.com", "start":"2016-02-19T03:00", "end":"2016-02-19T20:59", "status":"Free", "allday":"0", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}, {"id":"69840", "title":"Eventname 1", "location":"Here", "organizer":"Event@doe.com", "start":"2016-03-01T04:00", "end":"2016-03-01T19:59", "status":"Tentative", "allday":"0", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}, {"id":"69844", "title":"Tims Event", "location":"Hannover", "organizer":"Event@doe.com", "start":"2016-01-02T00:00", "end":"2016-01-02T00:05", "status":"Free", "allday":"0", "webpage":"http://www.google.de", "imageurl":"", "categories":[]}, {"id":"69653", "title":"PE", "location":"Hannover", "organizer":"Event@doe.com", "start":"2016-03-07T00:00", "end":"2016-03-07T23:59", "status":"Free", "allday":"1", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}, {"id":"69842", "title":"Eventname 3", "location":"Here", "organizer":"Event@doe.com", "start":"2016-03-03T09:00", "end":"2016-03-03T19:59", "status":"Tentative", "allday":"0", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}, {"id":"69839", "title":"Event Test", "location":"Hannover", "organizer":"Event@doe.com", "start":"2016-01-16T08:33", "end":"2016-01-16T13:10", "status":"Free", "allday":"0", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}, {"id":"69843", "title":"Eventname 4", "location":"Here", "organizer":"Event@doe.com", "start":"2016-03-04T11:00", "end":"2016-03-04T17:59", "status":"Tentative", "allday":"0", "webpage":"https://www.google.de", "imageurl":"", "categories":[]}]}}
+{
+    "events": {
+        "user": "6334355",
+        "events": [
+            {
+                "id": "69837",
+                "title": "Eventname",
+                "location": "Test",
+                "organizer": "Event@doe.com",
+                "start": "2016-02-19T03:00",
+                "end": "2016-02-19T20:59",
+                "status": "Free",
+                "allday": "0",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69840",
+                "title": "Eventname 1",
+                "location": "Here",
+                "organizer": "Event@doe.com",
+                "start": "2016-03-01T04:00",
+                "end": "2016-03-01T19:59",
+                "status": "Tentative",
+                "allday": "0",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69844",
+                "title": "Tims Event",
+                "location": "Hannover",
+                "organizer": "Event@doe.com",
+                "start": "2016-01-02T00:00",
+                "end": "2016-01-02T00:05",
+                "status": "Free",
+                "allday": "0",
+                "webpage": "http://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69653",
+                "title": "PE",
+                "location": "Hannover",
+                "organizer": "Event@doe.com",
+                "start": "2016-03-07T00:00",
+                "end": "2016-03-07T23:59",
+                "status": "Free",
+                "allday": "1",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69842",
+                "title": "Eventname 3",
+                "location": "Here",
+                "organizer": "Event@doe.com",
+                "start": "2016-03-03T09:00",
+                "end": "2016-03-03T19:59",
+                "status": "Tentative",
+                "allday": "0",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69839",
+                "title": "Event Test",
+                "location": "Hannover",
+                "organizer": "Event@doe.com",
+                "start": "2016-01-16T08:33",
+                "end": "2016-01-16T13:10",
+                "status": "Free",
+                "allday": "0",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }, {
+                "id": "69843",
+                "title": "Eventname 4",
+                "location": "Here",
+                "organizer": "Event@doe.com",
+                "start": "2016-03-04T11:00",
+                "end": "2016-03-04T17:59",
+                "status": "Tentative",
+                "allday": "0",
+                "webpage": "https://www.google.de",
+                "imageurl": "",
+                "categories": []
+            }]
+    }
+}

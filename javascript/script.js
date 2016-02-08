@@ -162,7 +162,7 @@ var main = function() { // Main Function -> Starts when Document is ready
         $('#overlay').addClass('blur-out');
         e.stopPropagation();
     });
-
+    
     $('#create-form').submit(function(e) {
         e.preventDefault();
         $('.createEvent').fadeOut(700);
@@ -306,10 +306,10 @@ var main = function() { // Main Function -> Starts when Document is ready
             },
             dataType: "json",
             success: function(msg) {
-                console.log(msg);
-                console.log(start)
-                eventsCall();
-
+                errorId = msg.error.id;
+                if (errorId == "0022") {
+                    alert("Error:\n Event did not save: \n End must be after start")
+                }
             }
         });
     });   
@@ -339,7 +339,7 @@ var main = function() { // Main Function -> Starts when Document is ready
     
     // Edit Event
     $(".editEvent").click(function(e) {
-        var input = $('<input />', {
+        var organzier = $('<input />', {
             'type': 'email',
             'name': "organizerNew",
             'class': 'inputChange',
@@ -357,33 +357,28 @@ var main = function() { // Main Function -> Starts when Document is ready
         switch (color[2]) {
             case "red":
                 $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent red").appendTo(".eventButtons");
-                //$(".eventHeader").removeClass("border-red");
                 $(".eventTitle").removeClass("eventred red");
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-red");
                 //
-                $(".eventOrganizator").replaceWith(input);
+                $(".eventOrganizator").replaceWith(organzier);
                 break;
             case "green":
-                $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent green").appendTo(".eventButtons");
-                $(".eventHeader").removeClass("border-green");
+                $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent green").appendTo(".eventButtons");
                 $(".eventTitle").removeClass("eventgreen green");
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-green");
                 break;
             case "blue":
-                $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent blue").appendTo(".eventButtons");
-                $(".eventHeader").removeClass("border-blue");
+                $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent blue").appendTo(".eventButtons");
                 $(".eventTitle").removeClass("eventblue blue");                
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-blue");
                 break;
             case "purple":
-                $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent purple").appendTo(".eventButtons");
-                $(".eventHeader").removeClass("border-purple");
+                $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent purple").appendTo(".eventButtons");
                 $(".eventTitle").removeClass("eventpurple purple");  
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-purple");
                 break;
             case "orange":
-                $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent orange").appendTo(".eventButtons");
-                $(".eventHeader").removeClass("border-orange");
+                $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent orange").appendTo(".eventButtons");
                 $(".eventTitle").removeClass("eventorange orange"); 
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-orange");
                 break;
@@ -392,7 +387,12 @@ var main = function() { // Main Function -> Starts when Document is ready
         }
         
         $(".changeEvent").click(function () {
-           alert("Test"); 
+            var str = $('.eventTitle').text();
+            var eventTitle = str.replace(',', '');
+            var id = $(".eventid").text();
+            console.log(eventTitle);
+            console.log(id);
+            
         });
        
         $('.close-button').click(function(e) {
