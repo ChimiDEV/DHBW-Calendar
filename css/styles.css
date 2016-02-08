@@ -438,8 +438,8 @@ body {
     z-index: 2;
     right: 0;
     left: 0;
-    margin-right: 30%;
-    margin-left: 30%;
+    margin-right: 27%;
+    margin-left: 27%;
 }
 
 .box {
@@ -570,9 +570,14 @@ body {
     text-decoration: none;
 }
 
-eventtime-span {
-    display: inline-block;
-    float: left;
+#eventtime-span, #eventorganizer-span, #eventpage-span {
+    font-weight: bold;
+}
+#eventpage-span {
+    margin-right: 5px;
+}
+#eventtime-span {
+    margin-right: 38px;
 }
 
 .eventAllDay {
@@ -587,7 +592,9 @@ eventtime-span {
     margin-right: 10px;
     padding: 2px 10px 2px 10px;
     text-align: center;
+    border: transparent;
 }
+
 
 .delEvent {
     padding: 2px 10px 2px 10px;

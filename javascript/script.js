@@ -339,18 +339,29 @@ var main = function() { // Main Function -> Starts when Document is ready
     
     // Edit Event
     $(".editEvent").click(function(e) {
+        var input = $('<input />', {
+            'type': 'email',
+            'name': "organizerNew",
+            'class': 'inputChange',
+            'placeholder':$(".eventOrganizator").text(),
+            'maxlenght': "100",
+            'required': true
+        });
+        
         var str = $(".eventButtons").children("a").attr("class");
         var color = str.split(" ");
         console.log(color[2]);
-        $("<div>").text("Edit Event: ").addClass("eventEditor").prependTo(".eventHeader");
+        //$("<div>").text("Edit Event: ").addClass("eventEditor").prependTo(".eventHeader");
         $(".eventTitle").css("pointer-events", "all");
         $(".editEvent").toggle();
         switch (color[2]) {
             case "red":
-                $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent red").appendTo(".eventButtons");
-                $(".eventHeader").removeClass("border-red");
+                $("<input>").text("Submit").attr("type", "submit").addClass("eventbtn changeEvent red").appendTo(".eventButtons");
+                //$(".eventHeader").removeClass("border-red");
                 $(".eventTitle").removeClass("eventred red");
                 $(".eventTitle").attr("contenteditable", "true").addClass("editable-red");
+                //
+                $(".eventOrganizator").replaceWith(input);
                 break;
             case "green":
                 $("<a>").text("Submit").attr("href", "#").addClass("eventbtn changeEvent green").appendTo(".eventButtons");
