@@ -165,10 +165,6 @@ var main = function() { // Main Function -> Starts when Document is ready
     
     $('#create-form').submit(function(e) {
         e.preventDefault();
-        $('.createEvent').fadeOut(700);
-        $('#overlay').removeClass('blur-in');
-        $('#overlay').addClass('blur-out');
-        e.stopPropagation();
     });
 
     // Event PopUp - Shows all information of the Event
@@ -309,6 +305,10 @@ var main = function() { // Main Function -> Starts when Document is ready
                 errorId = msg.error.id;
                 if (errorId == "0022") {
                     alert("Error:\n Event did not save: \n End must be after start")
+                } else {
+                    $('.createEvent').fadeOut(700);
+                    $('#overlay').removeClass('blur-in');
+                    $('#overlay').addClass('blur-out');
                 }
             }
         });
@@ -414,3 +414,5 @@ var main = function() { // Main Function -> Starts when Document is ready
 $(document).ready(main);
 
 //$('selector').css('backgroundImage','url(images/example.jpg)');
+
+// add a _color (e.g. _red) to categorie name, split it when showing it to the user. So it's possible to save the color of the event. 

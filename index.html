@@ -74,7 +74,7 @@
                     <br> Date:
                     <input type="date" name="date" value="2016-01-01" required> Time:
                     <input type="time" id="start" name="time-start" value="00:00" required>
-                    <input type="time" id="end" name="time-end" value="23:59" required>
+                    <input type="time" id="end" name="time-end" value="00:00" required>
                     <br> All Day:
                     <input type="checkbox" id="allday" name="allday" value="1">
                     <br> Location:
@@ -104,7 +104,7 @@
             <form>
             <div class="eventInformations">
                 <div class="eventHeader">
-                    <span class="eventTitle"></span>
+                    <span class="eventTitle" onkeypress="return (this.innerText.length <= 50)"></span>
                     <span class="eventLocation"></span>
                     <span class="eventDate">30.February 2016</span>
                 </div>
