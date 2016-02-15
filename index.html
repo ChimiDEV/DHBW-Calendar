@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="javascript/js-webshim/minified/polyfiller.js" type="text/javascript"></script>
     <script src="javascript/script.js" type="text/javascript"></script>
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 
@@ -25,7 +26,7 @@
 
         <div class="section group">
             <div class="col span-1-of-3">
-
+                
                 <!-- Today Widget -->
                 <div class="today-widget">
                     <div class="date-today">
@@ -40,7 +41,8 @@
                         <div id="time"></div>
                     </div>
                 </div>
-
+                
+                <!-- Upcoming Event list -->
                 <div class="upcoming-events">
                     <div id="headerwidget">
                         <div class="previous">
@@ -53,7 +55,10 @@
                     </ul>
                 </div>
             </div>
+            
             <div class="col span-2-of-3">
+                
+                <!-- Calender -->
                 <div class="calender-widget">
                     <div id="calendar"></div>
 
@@ -64,7 +69,8 @@
     </div>
 
     <!-- Pop Up Dialog boxes -->
-    <div class="pop-up createEvent" id>
+    <!-- Create event -->
+    <div class="pop-up create-event" id>
         <div class="box">
             <a href="#" class="close-button">&#10006;</a>
             <div class="event-creator">
@@ -72,7 +78,9 @@
                     Eventname:
                     <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required>
                     <br> Date:
-                    <input type="date" name="date" value="2016-01-01" required> Time:
+                    <input type="date" name="date" value="" placeholder="Doubleclick: Datepicker" required> 
+                    <!-- <input type="date" class="datepicker" name="date" value="2016-01-01" required> <br> -->
+                    Time:
                     <input type="time" id="start" name="time-start" value="00:00" required>
                     <input type="time" id="end" name="time-end" value="00:00" required>
                     <br> All Day:
@@ -98,30 +106,34 @@
             </div>
         </div>
     </div>
-    <div class="pop-up showEvent">
-        <div class="box eventUp">
+    
+    <!-- Events pop up -->
+    <div class="pop-up show-event">
+        <div class="box event-up">
             <a href="#" class="close-button">&#10006;</a>
-            <form>
-            <div class="eventInformations">
-                <div class="eventHeader">
-                    <span class="eventTitle" onkeypress="return (this.innerText.length <= 50)"></span>
-                    <span class="eventLocation"></span>
-                    <span class="eventDate">30.February 2016</span>
+            <form class="editor" action="">
+                <div class="event-information">
+                    <div class="event-header">
+                        <span class="event-title"></span>
+                        <span class="event-location"></span>
+                        <span class="event-date">30.February 2016</span>
+                    </div>
+                    <span id="eventorganizer-span">Organizer: </span>
+                    <div class="event-organizer"></div>
+                    <div class="event-status"></div>
+                    <div class="event-page"><span id="eventpage-span">Webpage: </span><a href='#' id="event-web"></a></div>
+                    <span id="eventtime-span">Time: </span>
+                    <div class="event-allday"></div>
+                    <div class="event-time"></div>   
                 </div>
-                <span id="eventorganizer-span">Organzier: </span>
-                <div class="eventOrganizator"></div>
-                <div class="eventStatus"></div>
-                <div class="eventPage"><span id="eventpage-span">Webpage: </span><a href='#' id="eventWeb">no page</a></div>
-                <span id="eventtime-span">Time: </span>
-                <div class="eventAllDay"></div>
-                <div class="eventTime"></div>
-                <div class="eventButtons"><a href="#" class="eventbtn delEvent">Delete</a><a href="#" class="eventbtn editEvent">Edit</a></div>
-            </div>
-            </form>
+                <div class="event-buttons"><a href="#" class="eventbtn del-event">Delete</a><a href="#" class="eventbtn edit-event">Edit</a></div>
+            </form>    
         </div>
     </div>
 
-
+    <script> 
+        webshim.polyfill("forms forms-ext");   
+    </script>
 </body>
 
 </html>

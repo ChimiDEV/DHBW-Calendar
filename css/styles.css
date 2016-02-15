@@ -23,6 +23,10 @@ sub: orange          #fa7f00
     sub: orange_dr   #d77f00
 
 */
+
+.ws-popover-opener, .ws-time, .step-controls {
+    display: none;
+}
 :focus {
     outline-width: 0;
 }
@@ -322,6 +326,14 @@ body {
     font-size: 22pt;
 }
 
+.nocolor {
+    background-color: dimgrey;
+}
+
+.nocolor-border {
+    border-bottom: 3px solid #4e4e4e;
+}
+
 .red {
     background-color: #de4349;
 }
@@ -517,11 +529,11 @@ body {
     display: none;
 }
 
-.eventUp {
+.event-up {
     margin: 35% 70px 0 70px;
 }
 
-.eventInformations {
+.event-information {
     font-family: open-sans;
     margin-right: 1.5%;
     margin-left: 1.5%;
@@ -529,43 +541,36 @@ body {
     padding-bottom: 15px;
 }
 
-.eventTitle {
+.event-title {
     font-size: 24pt;
     font-weight: bold;
     text-transform: uppercase;
     color: #de4349;
 }
 
-.eventEditor {
-    font-size: 16pt;
-    color: black;
-    margin-bottom: 2px;
-    border-bottom: 1px solid black;
-}
-
-.eventLocation {
+.event-location {
     font-size: 18pt;
 }
 
-.eventDate {
+.event-date {
     font-size: 18pt;
     float: right;
     padding-top: 8px;
 }
 
-.eventOrganizator {
+.event-organizer {
     font-size: 14pt;
     display: inline-block;
     width: 50%;
 }
 
-.eventStatus {
+.event-status {
     font-size: 16pt;
     font-weight: bold;
     float: right;
 }
 
-#eventWeb {
+#event-web {
     text-decoration: none;
 }
 
@@ -579,22 +584,27 @@ body {
     margin-right: 38px;
 }
 
-.eventAllDay {
+.event-allday {
     display: inline-block;
 }
 
-.eventTime {
+.event-time {
     display: inline-block;
 }
 
-.editEvent, .changeEvent {
+.event-buttons {
+    margin-bottom: 8px;
+    margin-right: 10px;
+}
+
+.edit-event, .change-event {
     margin-right: 10px;
     padding: 2px 10px 2px 10px;
     text-align: center;
     border: transparent;
 }
 
-.delEvent {
+.del-event {
     padding: 2px 10px 2px 10px;
 }
 
@@ -638,39 +648,185 @@ body {
     color: #d77f00;
 }
 
+
+/* Edit input */
+.editor {
+    font-family: open-sans;
+}
+.editable-red::-webkit-input-placeholder {
+    color: rgba(222, 67, 73, 0.4)!important;
+}
+
+.editable-red:-moz-placeholder {
+    color: rgba(222, 67, 73, 0.4)!important;
+}
+
+.editable-red::-moz-placeholder {
+    color: rgba(222, 67, 73, 0.4)!important;
+}
+
+.editable-red:-ms-input-placeholder {
+    color: rgba(222, 67, 73, 0.4)!important;
+}
+
 .editable-red {
+    font-size: 24pt;
+    font-family: open-sans;
+    font-weight: bold;
+    width: 200px;
+    
     background-color: rgba(222, 67, 73, 0.1);
-    color: rgba(222, 67, 73, 0.4);
+    color: #de4349;
     border-left: 2px solid #de4349;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
+    
     padding: 0 5px 0 5px;
+}
+
+.editable-green::-webkit-input-placeholder {
+    color: rgba(95, 192, 115, 0.4)!important;
+}
+
+.editable-green:-moz-placeholder {
+    color: rgba(95, 192, 115, 0.4)!important;
+}
+
+.editable-green::-moz-placeholder {
+    color: rgba(95, 192, 115, 0.4)!important;
+}
+
+.editable-green:-ms-input-placeholder {
+    color: rgba(95, 192, 115, 0.4)!important;
 }
 
 .editable-green {
+    font-size: 24pt;
+    font-family: open-sans;
+    font-weight: bold;
+    width: 200px;
+    
     background-color: rgba(95, 192, 115, 0.1);
-    color: rgba(95, 192, 115, 0.4);
+    color: #5fc073 ;
     border-left: 2px solid #5fc073;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
     padding: 0 5px 0 5px;
+}
+
+.editable-blue::-webkit-input-placeholder {
+    color: rgba(103, 197, 235, 0.4)!important;
+}
+
+.editable-blue:-moz-placeholder {
+    color: rgba(103, 197, 235, 0.4)!important;
+}
+
+.editable-blue::-moz-placeholder {
+    color: rgba(103, 197, 235, 0.4)!important;
+}
+
+.editable-blue:-ms-input-placeholder {
+    color: rgba(103, 197, 235, 0.4)!important;
 }
 
 .editable-blue {
+    font-size: 24pt;
+    font-family: open-sans;
+    font-weight: bold;
+    width: 200px;
+    
     background-color: rgba(103, 197, 235, 0.1);
-    color: rgba(103, 197, 235, 0.4);
+    color: #67c5eb;
     border-left: 2px solid #67c5eb;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
     padding: 0 5px 0 5px;
+}
+
+.editable-purple::-webkit-input-placeholder {
+    color: rgba(169, 129, 191, 0.4)!important;
+}
+
+.editable-purple:-moz-placeholder {
+    color: rgba(169, 129, 191, 0.4)!important;
+}
+
+.editable-purple::-moz-placeholder {
+    color: rgba(169, 129, 191, 0.4)!important;
+}
+
+.editable-purple:-ms-input-placeholder {
+    color: rgba(169, 129, 191, 0.4)!important;
 }
 
 .editable-purple {
+    font-size: 24pt;
+    font-family: open-sans;
+    font-weight: bold;
+    width: 200px;
+    
     background-color: rgba(169, 129, 191, 0.1);
-    color: rgba(169, 129, 191, 0.4);
+    color: #a981bf;
     border-left: 2px solid #a981bf;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
     padding: 0 5px 0 5px;
 }
 
+.editable-orange::-webkit-input-placeholder {
+    color: rgba(250, 127, 0, 0.4)!important;
+}
+
+.editable-orange:-moz-placeholder {
+    color: rgba(250, 127, 0, 0.4)!important;
+}
+
+.editable-orange::-moz-placeholder {
+    color: rgba(250, 127, 0, 0.4)!important;
+}
+
+.editable-orange:-ms-input-placeholder {
+    color: rgba(250, 127, 0, 0.4)!important;
+}
+
 .editable-orange {
+    font-size: 24pt;
+    font-weight: bold;
+    width: 200px;
+    
     background-color: rgba(250, 127, 0, 0.1);
-    color: rgba(250, 127, 0, 0.4);
+    color: #fa7f00;
     border-left: 2px solid #fa7f00;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
     padding: 0 5px 0 5px;
+}
+
+.edit-location {
+    padding-bottom: 2px;
+    font-size: 18pt;
+    width: 100px;
+}
+
+.edit-date {
+    font-size: 18pt;
+    float: right;
+}
+
+.edit-organizer {
+    
+    margin-top: 3px;
+    font-size: 14pt;
+}
+
+.edit-page {
+    
 }
 
 /*///////////////BLUR ANIMATION//////////////*/
