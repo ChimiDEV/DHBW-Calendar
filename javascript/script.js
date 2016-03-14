@@ -1,11 +1,15 @@
-// Global Variables for the list View
+// Global Variables for the list View and Date
 var idDiv = 1;
 var idInf = -1;
+var currDateGlobal = new Date();
+var currDayGlobal = currDateGlobal.getDate();
+var currYearGlobal = currDateGlobal.getFullYear();
+var currMonthGlobal = currDateGlobal.getMonth();
+var reqDate = new Date(currDateGlobal);
 
 // Functions
 // Event PopUp - Shows all information of the Event
 var eventPopUp = function (id, img, e) {
-    //console.log(id);
     var index = $('#' + id + '').index();
     var str = $('#' + id + '').children("div").attr("class");
     var color = str.split(" ");
@@ -217,6 +221,556 @@ var clock = function () {
     }, 500);
 }
 
+// Create event
+var createEvent = function () {
+    var myEvent = $("#create-form :input").serializeArray();
+    console.log(myEvent);
+    if (myEvent.length == 9) { //All-Day is checked
+        var title = myEvent[0].value,
+            location = myEvent[5].value,
+            organizer = myEvent[6].value,
+            start = myEvent[1].value + "T" + "00:00",
+            end = myEvent[1].value + "T" + "23:59",
+            status = myEvent[8].value,
+            allday = 1,
+            webpage = myEvent[7].value;
+    } else { //All-Day is unchecked
+        var title = myEvent[0].value,
+            location = myEvent[4].value,
+            organizer = myEvent[5].value,
+            start = myEvent[1].value + "T" + checkData(myEvent[2].value),
+            end = myEvent[1].value + "T" + checkData(myEvent[3].value),
+            status = myEvent[7].value,
+            allday = 0,
+            webpage = myEvent[6].value;
+    }
+
+    var eventDate = new Date(start);
+    var currDate = new Date();
+    var intStart = parseInt(myEvent[2].value);
+    var intEnd = parseInt(myEvent[3].value);
+    if ((intStart > intEnd) && allday == 0) {
+        alert("Start cannot be greater than end");
+        intStart = 0;
+        intEnd = 0;
+
+    } else if (eventDate < currDate) {
+        alert("Start cannot be in the past");
+
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "http://host.bisswanger.com/dhbw/calendar.php",
+            data: {
+                user: "6334355",
+                action: "add",
+                format: "json",
+                title: title,
+                location: location,
+                organizer: organizer,
+                start: start,
+                end: end,
+                status: status,
+                allday: allday,
+                webpage: webpage
+            },
+            dataType: "json",
+            success: function (msg) {
+                $('.create-event').fadeOut(700);
+                $('#overlay').removeClass('blur-in');
+                $('#overlay').addClass('blur-out');
+            }
+        });
+        eventsCall();
+    }
+}
+
+// Delete Event
+var delEvent = function () {
+    var eventId = $(".eventid").text();
+    var index = $('#' + eventId + '').index();
+    var str = $('#' + eventId + '').children("div").attr("class");
+    var color = str.split(" ");
+    var classes = "event" + color[1];
+    $.ajax({
+        url: "http://host.bisswanger.com/dhbw/calendar.php",
+        data: {
+            user: "6334355",
+            action: "delete",
+            format: "json",
+            id: eventId
+        },
+        success: function (data) {
+            //console.log(data);
+        }
+    });
+
+    $('.show-event').fadeOut(700);
+    $('#overlay').removeClass('blur-in');
+    $('#overlay').addClass('blur-out');
+    setTimeout(function () {
+        $(".eventid").remove();
+        $(".eventdate").remove();
+        $('.event-up').removeClass("border-" + color[1]);
+        $('.event-header').removeClass("border-" + color[1]);
+        $('.event-title').removeClass(classes);
+        $("#category").empty();
+        $('#event-web').removeClass(classes);
+        $('.event-allday').show();
+        $('.event-time').show();
+        $('.del-event').removeClass(color[1]);
+        $('.img-event').removeClass(color[1]);
+        $('.delimg-event').removeClass(color[1]);
+        $('.catg-event').removeClass(color[1]);
+        $('.delcatg-event').removeClass(color[1]);
+        $('.edit-event').removeClass(color[1]);
+    }, 700);
+    eventsCall();
+}
+
+// Edit Event 
+var editEvent = function () {
+    var title = $('<input />', {
+        'type': 'text',
+        'name': "titleNew",
+        'class': 'edit-title',
+        'placeholder': $(".event-title").text(),
+        'maxlength': 50,
+        'required': true
+    });
+
+    var organizer = $('<input />', {
+        'type': 'email',
+        'name': "organizerNew",
+        'class': 'edit-organizer',
+        'placeholder': $(".event-organizer").text(),
+        'maxlength': 50,
+        'required': true
+    });
+
+    var location = $('<input />', {
+        'type': 'text',
+        'name': "locationNew",
+        'class': 'edit-location',
+        'placeholder': $(".event-location").text(),
+        'maxlength': 50,
+        'required': true
+    });
+
+    var date = $('<input />', {
+        'type': 'date',
+        'name': "dateNew",
+        'class': 'edit-date',
+        'placeholder': "Doubleclick: Datepicker",
+        'value': $(".eventdate").text(),
+        'required': true
+    });
+
+    var starttime = $('<input />', {
+        'type': 'time',
+        'name': "starttimeNew",
+        'class': 'edit-starttime',
+        'value': $(".starttime").text(),
+        'required': true
+    });
+
+    var endtime = $('<input />', {
+        'type': 'time',
+        'name': "endtimeNew",
+        'class': 'edit-endtime',
+        'value': $(".endtime").text(),
+        'required': true
+    });
+
+    var status = $('<select />', {
+        'id': 'statusNew',
+        'name': 'statusNew'
+    });
+
+    var webpage = $('<input />', {
+        'type': 'url',
+        'name': "WebpageNew",
+        'class': 'edit-page',
+        'placeholder': $("#event-web").text(),
+        'required': true
+    });
+
+
+    var str = $(".event-buttons").children("a").attr("class");
+    var color = str.split(" ");
+    var currStatus = $(".event-status").text();
+    $(".edit-event").hide();
+    $(".event-catg").hide();
+    //$(".edit-event").removeClass().addClass("eventbtn not-active notactive");
+    $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
+    $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
+    $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
+    $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
+
+
+
+    switch (color[2]) {
+    case "red":
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event red").appendTo(".event-buttons");
+        //$(".event-title").removeClass("eventred red");
+        //$(".event-title").attr("contenteditable", "true").addClass("editable-red");
+        $(".event-title").toggle();
+        $(title).addClass("editable-red").prependTo(".event-header");
+        break;
+    case "green":
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event green").appendTo(".event-buttons");
+        $(".event-title").toggle();
+        $(title).addClass("editable-green").prependTo(".event-header");
+        break;
+    case "blue":
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event blue").appendTo(".event-buttons");
+        $(".event-title").toggle();
+        $(title).addClass("editable-blue").prependTo(".event-header");
+        break;
+    case "purple":
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event purple").appendTo(".event-buttons");
+        $(".event-title").toggle();
+        $(title).addClass("editable-purple").prependTo(".event-header");
+        break;
+    case "orange":
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event orange").appendTo(".event-buttons");
+        $(".event-title").toggle();
+        $(title).addClass("editable-orange").prependTo(".event-header");
+        break;
+    default:
+        $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event nocolor").appendTo(".event-buttons");
+        $(".event-title").toggle();
+        $(title).addClass("editable-nocolor").prependTo(".event-header");
+
+    }
+    $(".event-location").toggle();
+    $(".event-date").toggle();
+    $(location).appendPolyfillTo(".event-header");
+    $(date).appendPolyfillTo(".event-header");
+
+    $(".event-organizer").toggle();
+    $(organizer).appendTo("#eventorganizer-span");
+
+    $("#event-web").toggle();
+    $(webpage).appendTo("#eventpage-span");
+
+    $(".event-allday").hide();
+    $(".event-time").hide();
+    $("#allday1").show();
+    $(starttime).appendPolyfillTo("#eventtime-span");
+    $(endtime).appendPolyfillTo("#eventtime-span");
+    $("<span>").addClass("info-allday").text("Allday").insertAfter("#allday1");
+    //$("<input>").attr("type", "checkbox").attr("id", "allday").attr("name", "allday").attr("value", "1").appendTo("#eventtime-span");
+    if ($(".event-allday").text() == "All Day") {
+        $("#allday1").attr('checked', true);
+        allDayLocker();
+    } else {
+        $("#allday1").attr('checked', false);
+    }
+
+    $("#allday1").click(function () {
+        allDayLocker();
+    });
+
+    // Which status should be selected
+    $(".event-status").toggle();
+    $(status).appendTo(".event-information");
+    if (currStatus == "Free") {
+        $("<option>").attr("selected", true).text("Free").appendTo("#statusNew");
+        $("<option>").text("Tentative").appendTo("#statusNew");
+        $("<option>").text("Busy").appendTo("#statusNew");
+    } else if (currStatus == "Tentative") {
+        $("<option>").text("Free").appendTo("#statusNew");
+        $("<option>").attr("selected", true).text("Tentative").appendTo("#statusNew");
+        $("<option>").text("Busy").appendTo("#statusNew");
+    } else {
+        $("<option>").text("Free").appendTo("#statusNew");
+        $("<option>").text("Tentative").appendTo("#statusNew");
+        $("<option>").attr("selected", true).text("Busy").appendTo("#statusNew");
+    }
+
+
+
+    // Preventing default on dynamic-created Elements causes failures...
+    $(document).on("submit", ".editor", function (event) {
+        event.preventDefault();
+        var edEvent = $("#edit-form :input").serializeArray();
+        console.log(edEvent);
+        var id = $(".eventid").text();
+        var title = edEvent[0].value,
+            location = edEvent[1].value,
+            organizer = edEvent[3].value,
+            webpage = edEvent[4].value;
+        if (edEvent.length == 8) {
+            var status = edEvent[7].value,
+                allday = 0;
+            var start = edEvent[2].value + "T" + checkData(edEvent[5].value);
+            var end = edEvent[2].value + "T" + checkData(edEvent[6].value);
+        } else {
+            var status = edEvent[8].value,
+                allday = 1;
+            var start = edEvent[2].value + "T" + "00:00";
+            var end = edEvent[2].value + "T" + "23:59";
+        }
+
+        var eventDate = new Date(start);
+        var currDate = new Date();
+        var intStart = parseInt(edEvent[5].value);
+        var intEnd = parseInt(edEvent[6].value);
+        if ((intStart >= intEnd) && allday == 0) {
+            alert("Start cannot be greater than end");
+        } else if (eventDate < currDate) {
+            alert("Start cannot be in the past");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "http://host.bisswanger.com/dhbw/calendar.php",
+                data: {
+                    user: "6334355",
+                    action: "update",
+                    format: "json",
+                    id: id,
+                    title: title,
+                    location: location,
+                    organizer: organizer,
+                    start: start,
+                    end: end,
+                    status: status,
+                    allday: allday,
+                    webpage: webpage
+                },
+                dataType: "json",
+                success: function (msg) {
+                    console.log(msg);
+                    $(".eventid").remove();
+                    $(".eventdate").remove();
+                    $(".show-event").fadeOut(700);
+                    $('#overlay').removeClass('blur-in');
+                    $('#overlay').addClass('blur-out');
+                    eventsCall();
+                    edEvent = [];
+
+                    setTimeout(function () {
+                        $(".change-event").remove();
+                        $(".edit-event").show();
+                        $(".event-catg").show();
+                        $("#category").empty();
+                        $(".ed").removeClass().addClass("eventbtn editevent-event");
+                        $(".img").removeClass().addClass("eventbtn img-event");
+                        $(".dimg").removeClass().addClass("eventbtn delimg-event");
+                        $(".ct").removeClass().addClass("eventbtn catg-event");
+                        $(".del").removeClass().addClass("eventbtn del-event");
+
+                        $(".event-title").show();
+                        $(".editable-red").remove();
+                        $(".editable-green").remove();
+                        $(".editable-blue").remove();
+                        $(".editable-purple").remove();
+                        $(".editable-orange").remove();
+                        $(".editable-nocolor").remove();
+
+                        $(".event-organizer").show();
+                        $(".edit-organizer").remove();
+
+                        $(".event-location").show();
+                        $(".edit-location").remove();
+
+                        $(".event-date").show();
+                        $(".edit-date").remove();
+
+                        $(".event-time").show();
+                        $(".edit-starttime").remove();
+                        $(".edit-endtime").remove();
+                        $("#allday1").hide();
+                        $(".info-allday").remove();
+
+                        $(".event-status").show();
+                        //$("#statusNew option").remove();
+                        $("#statusNew").remove();
+
+
+                        $("#event-web").show();
+                        $(".edit-page").remove();
+
+                    }, 700);
+                }
+            });
+        }
+    });
+}
+
+// Create Category 
+var createCatg = function () {
+    //Standart Value
+    $(".selected").css('border', '2px solid #4e4e4e');
+
+    $('#catg-form button').click(function () {
+        $('#color').val($(this).attr('name'));
+        $(this).siblings('button').css('border', 'none');
+        $(this).css('border', '2px solid #4e4e4e');
+    });
+
+    $("#catg-form").submit(function (e) {
+        e.preventDefault();
+        var catg = $("#catg-form :input").serializeArray();
+        catgName = catg[0].value + "_" + catg[1].value;
+
+        $.ajax({
+            type: "POST",
+            url: "http://host.bisswanger.com/dhbw/calendar.php",
+            data: {
+                user: "6334355",
+                action: "add-category",
+                format: "json",
+                name: catgName
+            },
+            dataType: "json",
+            success: function (msg) {
+                $('.add-catg').fadeOut(700);
+                $('#overlay').removeClass('blur-in');
+                $('#overlay').addClass('blur-out');
+                // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
+                location.reload();
+            }
+        });
+    });
+}
+
+// Delete Category
+var delCatg = function (catgId) {
+    $(".cancel-btn").click(function (e) {
+        e.preventDefault();
+        $('.del-catg').fadeOut(700);
+        $('#overlay').removeClass('blur-in');
+        $('#overlay').addClass('blur-out');
+    });
+
+    $(".del-catg-btn").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "http://host.bisswanger.com/dhbw/calendar.php",
+            data: {
+                user: "6334355",
+                action: "delete-category",
+                format: "json",
+                id: catgId
+            },
+            success: function (data) {
+                // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
+                location.reload();
+                $('.del-catg').fadeOut(700);
+                $('#overlay').removeClass('blur-in');
+                $('#overlay').addClass('blur-out');
+            }
+        });
+    });
+}
+
+// Add Category to Event
+var fillSelectionCatg = function () {
+    $(".edit-event").removeClass().addClass("eventbtn not-active notactive ed");
+    $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
+    $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
+    $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
+    $(".add-event-catg").show();
+
+    $.ajax({
+        type: "GET",
+        url: "http://host.bisswanger.com/dhbw/calendar.php",
+        data: {
+            user: "6334355",
+            format: "json",
+            action: "list-categories"
+        },
+        dataType: "json",
+        success: function (data) {
+            var size = data.categories.categories.length;
+            $("#input-category").empty();
+            for (i = 0; i < size; i++) {
+                var id = data.categories.categories[i].id;
+                var str = data.categories.categories[i].name;
+                var catg = str.split("_");
+                var name = catg[0];
+                $("<option>").text(name).attr("id", id).appendTo("#input-category");
+            }
+        }
+    });
+}
+
+var addCatg = function () {
+    $("#category-form").submit(function (e) {
+        e.preventDefault();
+        var catg = $("#category-form :input").serializeArray();
+        var selectedId = $("#category-form :selected").attr("id");
+        var eventId = $(".eventid").text();
+        $.ajax({
+            type: "POST",
+            url: "http://host.bisswanger.com/dhbw/calendar.php",
+            data: {
+                user: "6334355",
+                action: "put-category",
+                format: "json",
+                event: eventId,
+                category: selectedId
+            },
+            dataType: "json",
+            success: function (msg) {
+                eventsCall();
+            }
+        });
+    });
+    $("#category-form").trigger("submit");
+    $('.close-button').trigger("click");
+}
+
+// Remove Category from event 
+var delCatgEvent = function () {
+    var catgId = $(".eventcatg").text();
+    var eventId = $(".eventid").text();
+
+    $.ajax({
+        type: "POST",
+        url: "http://host.bisswanger.com/dhbw/calendar.php",
+        data: {
+            user: "6334355",
+            action: "remove-category",
+            format: "json",
+            event: eventId,
+            category: catgId
+        },
+        dataType: "json",
+        success: function (msg) {
+            $(".close-button").trigger("click");
+            // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
+            eventsCall();
+        }
+    });
+
+}
+
+// Upload Image -- NOT READY
+var uploadImg = function () {
+    $(".edit-event").removeClass().addClass("eventbtn not-active notactive ed");
+    $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
+    $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
+    $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
+    $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
+    $(".eventimg-up").show();
+
+    $('.close-button').click(function (e) {
+        e.preventDefault();
+        setTimeout(function () {
+            $(".eventimg-up").hide();
+            $(".ed").removeClass().addClass("eventbtn edit-event");
+            $(".img").removeClass().addClass("eventbtn img-event");
+            $(".dimg").removeClass().addClass("eventbtn delimg-event");
+            $(".ct").removeClass().addClass("eventbtn catg-event");
+            $(".del").removeClass().addClass("eventbtn del-event");
+
+        }, 700);
+    });
+}
+
 // Calls Events and creates the event boxes
 var eventsCall = function () {
     $.ajax({
@@ -258,7 +812,8 @@ var eventsCall = function () {
                     year = start.getUTCFullYear(),
                     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     date = " | " + d + "." + months[month] + " " + year,
-                    color = ["red border-red", "green border-green", "blue border-blue", "purple border-purple", "orange border-orange", "nocolor nocolor-border"];
+                    startHidden = year + ", " + (month + 1) + ", " + d,
+                    color = ["red border-red", "green border-green", "blue border-blue", "purple border-purple", "orange border-orange", "nocolor border-nocolor"];
                 //colorID = Math.floor(Math.random() * 6);
                 if (eventProp[i].categories.length == 1) {
                     var str = eventProp[i].categories[0].name;
@@ -281,15 +836,15 @@ var eventsCall = function () {
                         var colorID = 4;
                         break;
                     default:
-                        var colorID = 1;
+                        var colorID = 5;
                     };
                 } else {
-                    var colorID = 0;
+                    var colorID = 5;
                 }
 
 
                 //Creates the Eventboxes
-                $('<li>').attr('id', id).appendTo('#eventlist');
+                $('<li>').attr('id', id).addClass(startHidden).appendTo('#eventlist');
                 $('<div>').attr('class', 'eventbox ' + color[colorID]).attr('id', idDiv).appendTo('#' + id + '');
                 if (eventAllDay == 0) {
                     $('<div>').attr('class', 'time-event').text(startTime).appendTo('#' + idDiv + '');
@@ -315,7 +870,7 @@ var eventsCall = function () {
     });
 }
 
-// Locks Time to 0:00 and 23:59 for allday  
+// Locks Time to 0:00 for allday  
 var allDayLocker = function () {
     $("#start").val("00:00").attr("readonly", !$('#start').attr('readonly'));
     $("#end").val("00:00").attr("readonly", !$('#end').attr('readonly'));
@@ -356,11 +911,80 @@ var listCats = function () {
             var color = $(".categories-list").children().eq(i).attr("class");
             var id = $(".categories-list").children().eq(i).attr("id");
             /* <div class="catg"><div class="catg-list-color red" ></div><div class="catg-list-name">Important</div></div> */
-            $("<div>").addClass("catg " + i).appendTo(".catg-list");
-            $("<div>").addClass("catg-list-color " + color).attr("id", id).text("✖").appendTo("." + i);
-            $("<div>").addClass("catg-list-name").text(name).appendTo("." + i);
+            $("<div>").addClass("catg-" + i).appendTo(".catg-list");
+            $("<div>").addClass("catg-list-color " + color).attr("id", id).text("✖").appendTo(".catg-" + i);
+            $("<div>").addClass("catg-list-name").text(name).appendTo(".catg-" + i);
         }
 
+    }, 150);
+}
+
+// Calendar Creation 
+var createCalendar = function (y, m, d) {
+
+    // some needed Variables
+    var calDaysinMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var calMonthsLabels = ['January', 'February', 'March', 'April',
+                            'May', 'June', 'July', 'August', 'September',
+                            'October', 'November', 'December'];
+
+    // First day of month
+    var fucDate = new Date(y, m, d);
+    var fucMonth = fucDate.getMonth();
+    var fucYear = fucDate.getFullYear();
+    var fucDay = fucDate.getDate();
+    var firstDay = new Date(fucYear, fucMonth, 01);
+    var startingDay = firstDay.getDay() - 1;
+    var monthLength = calDaysinMonth[fucMonth];
+
+    // Compensate for leap year
+    if (fucMonth == 1) { // February only!
+        if ((fucYear % 4 == 0 && fucYear % 100 != 0) || fucYear % 400 == 0) {
+            monthLength = 29;
+        }
+    }
+
+    var monthName = calMonthsLabels[fucMonth];
+    $(".tc-currmonth").text(monthName);
+    $(".tc-curryear").text(fucYear);
+
+    // Fill ind the days
+    var day = 1;
+    var tmp = 0;
+    // this loop is for is weeks (rows)
+    for (var i = 0; i < 5; i++) {
+        // this loop is for weekdays (cells)
+        for (var j = 0; j <= 6; j++) {
+
+            if (day <= monthLength && (i > 0 || j >= startingDay)) {
+                $("." + tmp).text(day + ".");
+
+                if ((day == currDayGlobal) && (fucYear == currYearGlobal) && (fucMonth == currMonthGlobal)) {
+                    $("." + tmp).addClass("currday");
+                    $("." + tmp).closest(".tc-daycell").addClass("currday-cell");
+                }
+
+                day++;
+            }
+            tmp++;
+        }
+    }
+}
+
+var clearCalendar = function () {
+    $(".tc-day").empty();
+    $(".tc-day").removeClass("currday")
+    $(".tc-daycell").removeClass("currday-cell")
+}
+
+var fillCalendar = function () {
+    setTimeout(function () {
+        $("#eventlist li").each(function () {
+            var str = $(this).attr("class");
+            console.log(str);
+            eventDate = new Date(str)
+            console.log(eventDate);
+        });
     }, 150);
 }
 
@@ -369,25 +993,35 @@ var main = function () {
     var user = "TimWalter";
     var Mat = 6334355;
     $("#user").append(user + " // Matrikelnummer: " + Mat);
+
+    // initiliaze Clock
     clock();
 
+    // Activate Eventlistner for alldaylocker
     $("#allday").click(function (e) {
-        e.preventDefault();
         allDayLocker();
     });
 
-    /* Pop Ups */
+    // Hide Pop Ups
     $('.pop-up ').hide();
     $('.pop-up-catg').hide();
     $('#overlay').removeClass('blur-in');
 
-    // Create Event PopUp
+    // Fade in: Create Event 
     $('#create-event-btn').click(function (e) {
         e.preventDefault();
         $('.create-event').fadeIn(1000);
         $('#overlay').removeClass('blur-out');
         $('#overlay').addClass('blur-in');
         e.stopPropagation();
+    });
+
+    // Fade in: Add category
+    $("#create-category").click(function (e) {
+        e.preventDefault();
+        $('.add-catg').fadeIn(1000);
+        $('#overlay').removeClass('blur-out');
+        $('#overlay').addClass('blur-in');
     });
 
     // Close and hide pop ups
@@ -401,12 +1035,7 @@ var main = function () {
         e.stopPropagation();
     });
 
-    // Submit should not close the Pop up
-    $('#create-form').submit(function (e) {
-        e.preventDefault();
-    });
-
-    //Calls the Event Pop Up function
+    // Calls the Event Pop Up function
     $("#eventlist").on("click", "li", function (e) {
         e.preventDefault();
         var id = $(this).attr("id");
@@ -424,534 +1053,95 @@ var main = function () {
     eventsCall();
     listCats();
 
-    // Create Event
-    $('#create-form').submit(function () {
-        var myEvent = $("#create-form :input").serializeArray();
-        console.log(myEvent);
-        if (myEvent.length == 9) { //All-Day is checked
-            var title = myEvent[0].value,
-                location = myEvent[5].value,
-                organizer = myEvent[6].value,
-                start = myEvent[1].value + "T" + "00:00",
-                end = myEvent[1].value + "T" + "23:59",
-                status = myEvent[8].value,
-                allday = 1,
-                webpage = myEvent[7].value;
-        } else { //All-Day is unchecked
-            var title = myEvent[0].value,
-                location = myEvent[4].value,
-                organizer = myEvent[5].value,
-                start = myEvent[1].value + "T" + checkData(myEvent[2].value),
-                end = myEvent[1].value + "T" + checkData(myEvent[3].value),
-                status = myEvent[7].value,
-                allday = 0,
-                webpage = myEvent[6].value;
-        }
-
-        var intStart = parseInt(myEvent[2].value);
-        var intEnd = parseInt(myEvent[3].value);
-        if ((intStart > intEnd) && allday == 0) {
-            alert("Start cannot be greater than end");
-            intStart = 0;
-            intEnd = 0;
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "http://host.bisswanger.com/dhbw/calendar.php",
-                data: {
-                    user: "6334355",
-                    action: "add",
-                    format: "json",
-                    title: title,
-                    location: location,
-                    organizer: organizer,
-                    start: start,
-                    end: end,
-                    status: status,
-                    allday: allday,
-                    webpage: webpage
-                },
-                dataType: "json",
-                success: function (msg) {
-                    $('.create-event').fadeOut(700);
-                    $('#overlay').removeClass('blur-in');
-                    $('#overlay').addClass('blur-out');
-                }
-            });
-            eventsCall();
-        }
+    // Eventlistener: Create Event
+    $('#create-form').submit(function (e) {
+        e.preventDefault();
+        createEvent();
     });
 
-    // Delete Event
+    // Eventlistener: Delete Event
     $('.del-event').click(function (e) {
         e.preventDefault();
-        var eventId = $(".eventid").text();
-        var index = $('#' + eventId + '').index();
-        var str = $('#' + eventId + '').children("div").attr("class");
-        var color = str.split(" ");
-        var classes = "event" + color[1];
-        $.ajax({
-            url: "http://host.bisswanger.com/dhbw/calendar.php",
-            data: {
-                user: "6334355",
-                action: "delete",
-                format: "json",
-                id: eventId
-            },
-            success: function (data) {
-                //console.log(data);
-            }
-        });
-
-        $('.show-event').fadeOut(700);
-        $('#overlay').removeClass('blur-in');
-        $('#overlay').addClass('blur-out');
-        setTimeout(function () {
-            $(".eventid").remove();
-            $(".eventdate").remove();
-            $('.event-up').removeClass("border-" + color[1]);
-            $('.event-header').removeClass("border-" + color[1]);
-            $('.event-title').removeClass(classes);
-            $("#category").empty();
-            $('#event-web').removeClass(classes);
-            $('.event-allday').show();
-            $('.event-time').show();
-            $('.del-event').removeClass(color[1]);
-            $('.img-event').removeClass(color[1]);
-            $('.delimg-event').removeClass(color[1]);
-            $('.catg-event').removeClass(color[1]);
-            $('.delcatg-event').removeClass(color[1]);
-            $('.edit-event').removeClass(color[1]);
-        }, 700);
-        eventsCall();
+        delEvent();
     });
 
-    // Edit Event
+    // Eventlistener: Edit Event
     $(".edit-event").click(function (e) {
         e.preventDefault();
-        var title = $('<input />', {
-            'type': 'text',
-            'name': "titleNew",
-            'class': 'edit-title',
-            'placeholder': $(".event-title").text(),
-            'maxlength': 50,
-            'required': true
-        });
-
-        var organizer = $('<input />', {
-            'type': 'email',
-            'name': "organizerNew",
-            'class': 'edit-organizer',
-            'placeholder': $(".event-organizer").text(),
-            'maxlength': 50,
-            'required': true
-        });
-
-        var location = $('<input />', {
-            'type': 'text',
-            'name': "locationNew",
-            'class': 'edit-location',
-            'placeholder': $(".event-location").text(),
-            'maxlength': 50,
-            'required': true
-        });
-
-        var date = $('<input />', {
-            'type': 'date',
-            'name': "dateNew",
-            'class': 'edit-date',
-            'placeholder': "Doubleclick: Datepicker",
-            'value': $(".eventdate").text(),
-            'required': true
-        });
-
-        var starttime = $('<input />', {
-            'type': 'time',
-            'name': "starttimeNew",
-            'class': 'edit-starttime',
-            'value': $(".starttime").text(),
-            'required': true
-        });
-
-        var endtime = $('<input />', {
-            'type': 'time',
-            'name': "endtimeNew",
-            'class': 'edit-endtime',
-            'value': $(".endtime").text(),
-            'required': true
-        });
-
-        var status = $('<select />', {
-            'id': 'statusNew',
-            'name': 'statusNew'
-        });
-
-        var webpage = $('<input />', {
-            'type': 'url',
-            'name': "WebpageNew",
-            'class': 'edit-page',
-            'placeholder': $("#event-web").text(),
-            'required': true
-        });
-
-
-        var str = $(".event-buttons").children("a").attr("class");
-        var color = str.split(" ");
-        var currStatus = $(".event-status").text();
-        $(".edit-event").hide();
-        $(".event-catg").hide();
-        //$(".edit-event").removeClass().addClass("eventbtn not-active notactive");
-        $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
-        $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
-        $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
-        $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
-
-
-
-        switch (color[2]) {
-        case "red":
-            $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event red").appendTo(".event-buttons");
-            //$(".event-title").removeClass("eventred red");
-            //$(".event-title").attr("contenteditable", "true").addClass("editable-red");
-            $(".event-title").toggle();
-            $(title).addClass("editable-red").prependTo(".event-header");
-            break;
-        case "green":
-            $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event green").appendTo(".event-buttons");
-            $(".event-title").toggle();
-            $(title).addClass("editable-green").prependTo(".event-header");
-            break;
-        case "blue":
-            $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event blue").appendTo(".event-buttons");
-            $(".event-title").toggle();
-            $(title).addClass("editable-blue").prependTo(".event-header");
-            break;
-        case "purple":
-            $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event purple").appendTo(".event-buttons");
-            $(".event-title").toggle();
-            $(title).addClass("editable-purple").prependTo(".event-header");
-            break;
-        case "orange":
-            $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event orange").appendTo(".event-buttons");
-            $(".event-title").toggle();
-            $(title).addClass("editable-orange").prependTo(".event-header");
-            break;
-        default:
-
-        }
-        $(".event-location").toggle();
-        $(".event-date").toggle();
-        $(location).appendPolyfillTo(".event-header");
-        $(date).appendPolyfillTo(".event-header");
-
-        $(".event-organizer").toggle();
-        $(organizer).appendTo("#eventorganizer-span");
-
-        $("#event-web").toggle();
-        $(webpage).appendTo("#eventpage-span");
-
-        $(".event-allday").hide();
-        $(".event-time").hide();
-        $("#allday1").show();
-        $(starttime).appendPolyfillTo("#eventtime-span");
-        $(endtime).appendPolyfillTo("#eventtime-span");
-        $("<span>").addClass("info-allday").text("Allday").insertAfter("#allday1");
-        //$("<input>").attr("type", "checkbox").attr("id", "allday").attr("name", "allday").attr("value", "1").appendTo("#eventtime-span");
-        if ($(".event-allday").text() == "All Day") {
-            $("#allday1").attr('checked', true);
-            allDayLocker();
-        } else {
-            $("#allday1").attr('checked', false);
-        }
-
-        $("#allday1").click(function () {
-            e.preventDefault();
-            allDayLocker();
-        });
-
-        // Which status should be selected
-        $(".event-status").toggle();
-        $(status).appendTo(".event-information");
-        if (currStatus == "Free") {
-            $("<option>").attr("selected", true).text("Free").appendTo("#statusNew");
-            $("<option>").text("Tentative").appendTo("#statusNew");
-            $("<option>").text("Busy").appendTo("#statusNew");
-        } else if (currStatus == "Tentative") {
-            $("<option>").text("Free").appendTo("#statusNew");
-            $("<option>").attr("selected", true).text("Tentative").appendTo("#statusNew");
-            $("<option>").text("Busy").appendTo("#statusNew");
-        } else {
-            $("<option>").text("Free").appendTo("#statusNew");
-            $("<option>").text("Tentative").appendTo("#statusNew");
-            $("<option>").attr("selected", true).text("Busy").appendTo("#statusNew");
-        }
-
-
-
-        // Preventing default on dynamic-created Elements causes failures...
-        $(document).on("submit", ".editor", function (event) {
-            event.preventDefault();
-            var edEvent = $("#edit-form :input").serializeArray();
-            console.log(edEvent);
-            var id = $(".eventid").text();
-            var title = edEvent[0].value,
-                location = edEvent[1].value,
-                organizer = edEvent[3].value,
-                start = edEvent[2].value + "T" + checkData(edEvent[5].value),
-                end = edEvent[2].value + "T" + checkData(edEvent[6].value),
-                webpage = edEvent[4].value;
-            if (edEvent.length == 8) {
-                var status = edEvent[7].value,
-                    allday = 0;
-            } else {
-                var status = edEvent[8].value,
-                    allday = 1;
-            }
-
-            var intStart = parseInt(edEvent[5].value);
-            var intEnd = parseInt(edEvent[6].value);
-            if ((intStart >= intEnd) && allday == 0) {
-                alert("Start cannot be greater than end");
-                console.log(intStart);
-                console.log(intEnd);
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "http://host.bisswanger.com/dhbw/calendar.php",
-                    data: {
-                        user: "6334355",
-                        action: "update",
-                        format: "json",
-                        id: id,
-                        title: title,
-                        location: location,
-                        organizer: organizer,
-                        start: start,
-                        end: end,
-                        status: status,
-                        allday: allday,
-                        webpage: webpage
-                    },
-                    dataType: "json",
-                    success: function (msg) {
-                        console.log("Edit: " + msg);
-                        $(".eventid").remove();
-                        $(".eventdate").remove();
-                        $(".show-event").fadeOut(700);
-                        $('#overlay').removeClass('blur-in');
-                        $('#overlay').addClass('blur-out');
-                        edEvent = [];
-
-                        setTimeout(function () {
-                            $(".change-event").remove();
-                            $(".edit-event").show();
-                            $(".event-catg").show();
-                            $("#category").empty();
-                            $(".ed").removeClass().addClass("eventbtn editevent-event");
-                            $(".img").removeClass().addClass("eventbtn img-event");
-                            $(".dimg").removeClass().addClass("eventbtn delimg-event");
-                            $(".ct").removeClass().addClass("eventbtn catg-event");
-                            $(".del").removeClass().addClass("eventbtn del-event");
-
-                            $(".event-title").show();
-                            $(".editable-red").remove();
-                            $(".editable-green").remove();
-                            $(".editable-blue").remove();
-                            $(".editable-purple").remove();
-                            $(".editable-orange").remove();
-
-                            $(".event-organizer").show();
-                            $(".edit-organizer").remove();
-
-                            $(".event-location").show();
-                            $(".edit-location").remove();
-
-                            $(".event-date").show();
-                            $(".edit-date").remove();
-
-                            $(".event-time").show();
-                            $(".edit-starttime").remove();
-                            $(".edit-endtime").remove();
-                            $("#allday1").hide();
-                            $(".info-allday").remove();
-
-                            $(".event-status").show();
-                            //$("#statusNew option").remove();
-                            $("#statusNew").remove();
-
-
-                            $("#event-web").show();
-                            $(".edit-page").remove();
-
-                        }, 700);
-                    }
-                });
-
-                eventsCall();
-            }
-        });
-
-        /* $(".change-event").click( function(e) {
-             e.preventDefault(); 
-             $(".eventid").remove();
-             $('.show-event').fadeOut(700);
-             $('#overlay').removeClass('blur-in');
-             $('#overlay').addClass('blur-out');
-             e.stopPropagation();
-             
-         }); */
-
-        // Removes classes, delayed to fade out
-        $('.close-button').click(function (e) {
-            e.preventDefault();
-            setTimeout(function () {
-                $(".change-event").remove();
-                $(".edit-event").show();
-                $(".event-catg").show();
-                $("#category").empty();
-                $(".ed").removeClass().addClass("eventbtn editevent-event");
-                $(".img").removeClass().addClass("eventbtn img-event");
-                $(".dimg").removeClass().addClass("eventbtn delimg-event");
-                $(".ct").removeClass().addClass("eventbtn catg-event");
-                $(".del").removeClass().addClass("eventbtn del-event");
-
-                $(".event-title").show();
-                $(".editable-red").remove();
-                $(".editable-green").remove();
-                $(".editable-blue").remove();
-                $(".editable-purple").remove();
-                $(".editable-orange").remove();
-
-                $(".event-organizer").show();
-                $(".edit-organizer").remove();
-
-                $(".event-location").show();
-                $(".edit-location").remove();
-
-                $(".event-date").show();
-                $(".edit-date").remove();
-
-                $(".event-time").show();
-                $(".edit-starttime").remove();
-                $(".edit-endtime").remove();
-                $("#allday1").hide();
-                $(".info-allday").remove();
-
-                $(".event-status").show();
-                //$("#statusNew option").remove();
-                $("#statusNew").remove();
-
-
-                $("#event-web").show();
-                $(".edit-page").remove();
-
-            }, 700);
-        });
-
+        editEvent();
     });
 
-    // Upload Image
+    // Removes classes, delayed to fade out
+    $('.close-button').click(function (e) {
+        e.preventDefault();
+        setTimeout(function () {
+            $(".change-event").remove();
+            $(".edit-event").show();
+            $(".event-catg").show();
+            $("#category").empty();
+            $(".ed").removeClass().addClass("eventbtn editevent-event");
+            $(".img").removeClass().addClass("eventbtn img-event");
+            $(".dimg").removeClass().addClass("eventbtn delimg-event");
+            $(".ct").removeClass().addClass("eventbtn catg-event");
+            $(".del").removeClass().addClass("eventbtn del-event");
+
+            $(".event-title").show();
+            $(".editable-red").remove();
+            $(".editable-green").remove();
+            $(".editable-blue").remove();
+            $(".editable-purple").remove();
+            $(".editable-orange").remove();
+            $(".editable-nocolor").remove();
+
+            $(".event-organizer").show();
+            $(".edit-organizer").remove();
+
+            $(".event-location").show();
+            $(".edit-location").remove();
+
+            $(".event-date").show();
+            $(".edit-date").remove();
+
+            $(".event-time").show();
+            $(".edit-starttime").remove();
+            $(".edit-endtime").remove();
+            $("#allday1").hide();
+            $(".info-allday").remove();
+
+            $(".event-status").show();
+            $("#statusNew").remove();
+
+
+            $("#event-web").show();
+            $(".edit-page").remove();
+
+        }, 700);
+    });
+
+    //Eventlistener: Upload Image
     $(".img-event").click(function (e) {
         e.preventDefault();
-        $(".edit-event").removeClass().addClass("eventbtn not-active notactive ed");
-        $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
-        $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
-        $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
-        $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
-        $(".eventimg-up").show();
+        uploadImg();
 
-        $('.close-button').click(function (e) {
-            e.preventDefault();
-            setTimeout(function () {
-                $(".eventimg-up").hide();
-                $(".ed").removeClass().addClass("eventbtn edit-event");
-                $(".img").removeClass().addClass("eventbtn img-event");
-                $(".dimg").removeClass().addClass("eventbtn delimg-event");
-                $(".ct").removeClass().addClass("eventbtn catg-event");
-                $(".del").removeClass().addClass("eventbtn del-event");
-
-            }, 700);
-        });
     });
 
-    // Add category
+    // Eventlistener: Create Category
     $("#create-category").click(function (e) {
         e.preventDefault();
-        $('.add-catg').fadeIn(1000);
-        $('#overlay').removeClass('blur-out');
-        $('#overlay').addClass('blur-in');
+        createCatg();
+
     });
 
-    // Standart Value
-    $(".selected").css('border', '2px solid #4e4e4e');
-
-    $('#catg-form button').click(function () {
-        $('#color').val($(this).attr('name'));
-        $(this).siblings('button').css('border', 'none');
-        $(this).css('border', '2px solid #4e4e4e');
-    });
-
-    $("#catg-form").submit(function (e) {
-        var catg = $("#catg-form :input").serializeArray();
-        catgName = catg[0].value + "_" + catg[1].value;
-        console.log(catgName);
-        $.ajax({
-            type: "POST",
-            url: "http://host.bisswanger.com/dhbw/calendar.php",
-            data: {
-                user: "6334355",
-                action: "add-category",
-                format: "json",
-                name: catgName
-            },
-            dataType: "json",
-            success: function (msg) {
-                $('.add-catg').fadeOut(700);
-                $('#overlay').removeClass('blur-in');
-                $('#overlay').addClass('blur-out');
-                // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
-                location.reload();
-            }
-        });
-
-        e.preventDefault();
-    });
-
-    // Waits for completing list. Delete Category
+    // Fade in and Eventlistener: Delete Category
     setTimeout(function () { // Timeout --- Waits for loading 
         $(".catg-list-color").click(function (e) {
             e.preventDefault();
             $('.del-catg').fadeIn(1000);
-            var catgId = $(this).attr("id");
             $('#overlay').removeClass('blur-out');
             $('#overlay').addClass('blur-in');
 
-            $(".cancel-btn").click(function (e) {
-                $('.del-catg').fadeOut(700);
-                $('#overlay').removeClass('blur-in');
-                $('#overlay').addClass('blur-out');
-                e.preventDefault();
-            });
-
-            $(".del-catg-btn").click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "http://host.bisswanger.com/dhbw/calendar.php",
-                    data: {
-                        user: "6334355",
-                        action: "delete-category",
-                        format: "json",
-                        id: catgId
-                    },
-                    success: function (data) {
-                        // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
-                        location.reload();
-                        $('.del-catg').fadeOut(700);
-                        $('#overlay').removeClass('blur-in');
-                        $('#overlay').addClass('blur-out');
-                    }
-                });
-            });
+            var catgId = $(this).attr("id");
+            delCatg(catgId);
         });
     }, 150);
 
@@ -962,58 +1152,10 @@ var main = function () {
         if (action == 1) {
             e.preventDefault();
             action++;
-            $(".edit-event").removeClass().addClass("eventbtn not-active notactive ed");
-            $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
-            $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
-            $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
-            $(".add-event-catg").show();
-
-            $.ajax({
-                type: "GET",
-                url: "http://host.bisswanger.com/dhbw/calendar.php",
-                data: {
-                    user: "6334355",
-                    format: "json",
-                    action: "list-categories"
-                },
-                dataType: "json",
-                success: function (data) {
-                    var size = data.categories.categories.length;
-                    $("#input-category").empty();
-                    for (i = 0; i < size; i++) {
-                        var id = data.categories.categories[i].id;
-                        var str = data.categories.categories[i].name;
-                        var catg = str.split("_");
-                        var name = catg[0];
-                        $("<option>").text(name).attr("id", id).appendTo("#input-category");
-                    }
-                }
-            });
+            fillSelectionCatg();
         } else {
             e.preventDefault();
-            $("#category-form").submit(function (e) {
-                e.preventDefault();
-                var catg = $("#category-form :input").serializeArray();
-                var selectedId = $("#category-form :selected").attr("id");
-                var eventId = $(".eventid").text();
-                $.ajax({
-                    type: "POST",
-                    url: "http://host.bisswanger.com/dhbw/calendar.php",
-                    data: {
-                        user: "6334355",
-                        action: "put-category",
-                        format: "json",
-                        event: eventId,
-                        category: selectedId
-                    },
-                    dataType: "json",
-                    success: function (msg) {
-                        eventsCall();
-                    }
-                });
-            });
-            $("#category-form").trigger("submit");
-            $('.close-button').trigger("click");
+            addCatg();
         }
     });
 
@@ -1034,29 +1176,46 @@ var main = function () {
     // Delete Category from event
     $(".delcatg-event").click(function (e) {
         e.preventDefault();
-        var catgId = $(".eventcatg").text();
-        var eventId = $(".eventid").text();
-
-        $.ajax({
-            type: "POST",
-            url: "http://host.bisswanger.com/dhbw/calendar.php",
-            data: {
-                user: "6334355",
-                action: "remove-category",
-                format: "json",
-                event: eventId,
-                category: catgId
-            },
-            dataType: "json",
-            success: function (msg) {
-                $(".close-button").trigger("click");
-                // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
-                eventsCall();
-            }
-        });
+        delCatgEvent();
     });
 
-    /* ---- Calender Creation --- */
+    // initialize calendar
+    createCalendar(currYearGlobal, currMonthGlobal, currDayGlobal);
+    fillCalendar();
+
+    // Set calendar back to current month
+    $("#today-btn").click(function (e) {
+        e.preventDefault();
+        console.log(reqDate);
+        currDateGlobal = new Date();
+        reqDate = new Date();
+        console.log(reqDate);
+        clearCalendar();
+        createCalendar(currYearGlobal, currMonthGlobal, currDayGlobal);
+    });
+
+    // Next or Prev Month
+    $("#next-month-btn").click(function (e) {
+        e.preventDefault();
+        var reqMonth = reqDate.getMonth() + 1;
+        var reqYear = reqDate.getFullYear();
+
+        reqDate = new Date(reqYear, reqMonth, currDayGlobal);
+        clearCalendar();
+        createCalendar(reqYear, reqMonth, reqDate.getDate());
+
+    });
+
+    $("#prev-month-btn").click(function (e) {
+        e.preventDefault();
+        var reqMonth = reqDate.getMonth() - 1;
+        var reqYear = reqDate.getFullYear();
+
+        reqDate = new Date(reqYear, reqMonth, currDayGlobal);
+        clearCalendar();
+        createCalendar(reqYear, reqMonth, reqDate.getDate());
+
+    });
 
 };
 

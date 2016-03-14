@@ -32,7 +32,7 @@
                 <!-- Today Widget -->
                 <div class="today-widget">
                     <div class="date-today">
-                        <div id="day">29</div>
+                        <div id="day"></div>
                         <div class="day-month-year">
                             <span id="name-day"></span>
                             <br>
@@ -64,9 +64,9 @@
                     <div id="calendar">
                         <table class="table-calender">
                             <tr>
-                                <th class="tc-monthtag" colspan="7">MONTH YEAR
-                                    <br>
-                                </th>
+                                <td class="prev-month"><a href='#' class="prev-month-btn" id="prev-month-btn"> &lt; </a></td>
+                                <th class="tc-monthtag" colspan="5"><span class="tc-currmonth"></span> <span class="tc-curryear"></span></th>
+                                <td class="next-month" ><a href='#' class="next-month-btn active" id="next-month-btn"> &gt; </a></td>
                             </tr>
                             <tr>
                                 <td class="tc-daytag"><div class="daytag-inner">MON</div></td>
@@ -77,50 +77,50 @@
                                 <td class="tc-daytag"><div class="daytag-inner">SAT</div></td>
                                 <td class="tc-daytag"><div class="daytag-inner">SUN</div></td>
                             </tr>
-                            <tr>
-                                <td class="tc-daycell"><div class="tc-day">1.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">2.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">3.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">4.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">5.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">6.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">7.</div></td>
+                            <tr class="tc-row-0">
+                                <td class="tc-daycell"><div class="tc-day 0"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 1"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 2"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 3"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 4"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 5"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 6"></div></td>
                             </tr>
-                            <tr>
-                                <td class="tc-daycell"><div class="tc-day">8.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">9.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">10.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">11.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">12.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">13.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">14.</div></td>
+                            <tr class="tc-row-1">
+                                <td class="tc-daycell"><div class="tc-day 7"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 8"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 9"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 10"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 11"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 12"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 13"></div></td>
                             </tr>
-                            <tr>
-                                <td class="tc-daycell"><div class="tc-day">15.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">16.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">17.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">18.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">19.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">20.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">21.</div></td>
+                            <tr class="tc-row-2">
+                                <td class="tc-daycell"><div class="tc-day 14"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 15"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 16"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 17"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 18"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 19"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 20"></div></td>
                             </tr>
-                            <tr>
-                                <td class="tc-daycell"><div class="tc-day">22.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">23.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">24.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">25.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">26.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">27.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">28.</div></td>
+                            <tr class="tc-row-3">
+                                <td class="tc-daycell"><div class="tc-day 21"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 22"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 23"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 24"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 25"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 26"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 27"></div></td>
                             </tr>
-                            <tr>
-                                <td class="tc-daycell"><div class="tc-day">29.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">30.</div></td>
-                                <td class="tc-daycell"><div class="tc-day">31.</div></td>
-                                <td class="tc-daycell"><div class="tc-day"></div></td>
-                                <td class="tc-daycell"><div class="tc-day"></div></td>
-                                <td class="tc-daycell"><div class="tc-day"></div></td>
-                                <td class="tc-daycell"><div class="tc-day"></div></td>
+                            <tr class="tc-row-4">
+                                <td class="tc-daycell"><div class="tc-day 28"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 29"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 30"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 31"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 32"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 33"></div></td>
+                                <td class="tc-daycell"><div class="tc-day 34"></div></td>
                             </tr>
                         </table>
 
@@ -204,8 +204,8 @@
                     <div class="event-page"><span id="eventpage-span">Webpage: </span>
                         <a href='#' id="event-web"></a>
                     </div>
-                    <span id="eventtime-span">Time:</span>
-                    <input type="checkbox" id="allday1" name="allday" value="1">
+                    <span id="eventtime-span">Time: </span>
+                    <input type="checkbox" id="allday1" name="allday1" value="1">
                     <div class="event-allday"></div>
                     <div class="event-time"></div>
                 </div>
@@ -214,7 +214,8 @@
                     <a href="#" class="eventbtn delimg-event">Remove Image</a>
                     <a href="#" class="eventbtn img-event">Upload Image</a>
                     <a href="#" class="eventbtn catg-event">Add Category</a>
-                    <a href="#" class="eventbtn edit-event">Edit</a></div>
+                    <a href="#" class="eventbtn edit-event">Edit</a>
+                </div>
             </form>
             <div class="eventimg-up">
                 <form id="img-up" class="up" action="">
