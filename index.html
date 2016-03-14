@@ -22,11 +22,13 @@
             <div id="today"><a class="btn" id="today-btn" href="#">Today</a></div>
             <div id="seperator"></div>
             <div id="create-event"><a class="btn" id="create-event-btn" href="#">Create Event</a></div>
+            <div id="seperator"></div>
+            <div id="create-category"><a class="btn" id="create-categroy-btn" href="#">Add Category</a></div>
         </div>
 
         <div class="section group">
             <div class="col span-1-of-3">
-                
+
                 <!-- Today Widget -->
                 <div class="today-widget">
                     <div class="date-today">
@@ -41,7 +43,7 @@
                         <div id="time"></div>
                     </div>
                 </div>
-                
+
                 <!-- Upcoming Event list -->
                 <div class="upcoming-events">
                     <div id="headerwidget">
@@ -55,13 +57,86 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="col span-2-of-3">
-                
                 <!-- Calender -->
                 <div class="calender-widget">
-                    <div id="calendar"></div>
+                    <div id="calendar">
+                        <table class="table-calender">
+                            <tr>
+                                <th class="tc-monthtag" colspan="7">MONTH YEAR
+                                    <br>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="tc-daytag"><div class="daytag-inner">MON</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">TUE</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">WED</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">THU</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">FRI</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">SAT</div></td>
+                                <td class="tc-daytag"><div class="daytag-inner">SUN</div></td>
+                            </tr>
+                            <tr>
+                                <td class="tc-daycell"><div class="tc-day">1.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">2.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">3.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">4.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">5.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">6.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">7.</div></td>
+                            </tr>
+                            <tr>
+                                <td class="tc-daycell"><div class="tc-day">8.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">9.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">10.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">11.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">12.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">13.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">14.</div></td>
+                            </tr>
+                            <tr>
+                                <td class="tc-daycell"><div class="tc-day">15.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">16.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">17.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">18.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">19.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">20.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">21.</div></td>
+                            </tr>
+                            <tr>
+                                <td class="tc-daycell"><div class="tc-day">22.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">23.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">24.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">25.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">26.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">27.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">28.</div></td>
+                            </tr>
+                            <tr>
+                                <td class="tc-daycell"><div class="tc-day">29.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">30.</div></td>
+                                <td class="tc-daycell"><div class="tc-day">31.</div></td>
+                                <td class="tc-daycell"><div class="tc-day"></div></td>
+                                <td class="tc-daycell"><div class="tc-day"></div></td>
+                                <td class="tc-daycell"><div class="tc-day"></div></td>
+                                <td class="tc-daycell"><div class="tc-day"></div></td>
+                            </tr>
+                        </table>
 
+                    </div>
+
+                </div>
+
+                <div class="catg-legend">
+                    <div class="catg-title">Categories: </div>
+                    <div class="catg">
+                        <div class="catg-list-color-nocatg noCatg"></div>
+                        <div class="catg-list-name">None</div>
+                    </div>
+                    <div class="catg-list">
+
+                    </div>
                 </div>
             </div>
 
@@ -74,11 +149,12 @@
         <div class="box">
             <a href="#" class="close-button">&#10006;</a>
             <div class="event-creator">
+                <div class="event-header-show border-red"><span class="event-title-show">Create Event</span></div>
                 <form id="create-form" action="">
                     Eventname:
                     <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required>
                     <br> Date:
-                    <input type="date" name="date" value="" placeholder="Doubleclick: Datepicker" required> 
+                    <input type="date" name="date" value="" placeholder="Doubleclick: Datepicker" required>
                     <!-- <input type="date" class="datepicker" name="date" value="2016-01-01" required> <br> -->
                     Time:
                     <input type="time" id="start" name="time-start" value="00:00" required>
@@ -101,38 +177,99 @@
                     <br>
                     <!-- Category: <br> 
                 Image:      <input type="file" name="imageurl"> <br> -->
-                    <input class="eventbtn submit"  type="submit" value="Submit">
+                    <input class="eventbtn submit" type="submit" value="Submit">
                 </form>
             </div>
         </div>
     </div>
-    
+
     <!-- Events pop up -->
     <div class="pop-up show-event">
         <div class="box event-up">
             <a href="#" class="close-button">&#10006;</a>
-            <form class="editor" action="">
+            <form class="editor" id="edit-form" action="">
                 <div class="event-information">
                     <div class="event-header">
                         <span class="event-title"></span>
                         <span class="event-location"></span>
                         <span class="event-date">30.February 2016</span>
                     </div>
-                    <span id="eventorganizer-span">Organizer: </span>
-                    <div class="event-organizer"></div>
+                    <div class="event-catg"><a href="#" class="delcatg-event">&#10006; </a>
+                        <div id="category"></div>
+                    </div>
                     <div class="event-status"></div>
-                    <div class="event-page"><span id="eventpage-span">Webpage: </span><a href='#' id="event-web"></a></div>
-                    <span id="eventtime-span">Time: </span>
+                    <div class="event-org"><span id="eventorganizer-span">Organizer: </span>
+                        <div class="event-organizer"></div>
+                    </div>
+                    <div class="event-page"><span id="eventpage-span">Webpage: </span>
+                        <a href='#' id="event-web"></a>
+                    </div>
+                    <span id="eventtime-span">Time:</span>
+                    <input type="checkbox" id="allday1" name="allday" value="1">
                     <div class="event-allday"></div>
-                    <div class="event-time"></div>   
+                    <div class="event-time"></div>
                 </div>
-                <div class="event-buttons"><a href="#" class="eventbtn del-event">Delete</a><a href="#" class="eventbtn edit-event">Edit</a></div>
-            </form>    
+                <div class="event-buttons">
+                    <a href="#" class="eventbtn del-event">Delete</a>
+                    <a href="#" class="eventbtn delimg-event">Remove Image</a>
+                    <a href="#" class="eventbtn img-event">Upload Image</a>
+                    <a href="#" class="eventbtn catg-event">Add Category</a>
+                    <a href="#" class="eventbtn edit-event">Edit</a></div>
+            </form>
+            <div class="eventimg-up">
+                <form id="img-up" class="up" action="">
+                    <span id="eventimg-span">Image: </span>
+                    <input type="file" name="file"></input>
+                    <input type="submit" value="Upload" class="eventbtn imgup-event red"></input>
+                </form>
+            </div>
+            <div class="add-event-catg">
+                <form id="category-form" action="">
+                    <span id="category-span">Category: </span>
+                    <select name="category-select" id="input-category">
+                    </select>
+                </form>
+            </div>
         </div>
     </div>
 
-    <script> 
-        webshim.polyfill("forms forms-ext");   
+    <div class="pop-up add-catg">
+        <div class="box">
+            <a href="#" class="close-button">&#10006;</a>
+            <div class="create-catg">
+                <div class="event-header-catg border-red"><span class="event-title-catg">Create Category</span></div>
+                <form class="editor" id="catg-form" action="#">
+                    <span class="category-name">Name: </span>
+                    <input type="text" name="category" maxlength="24" required></input>
+                    <br>
+                    <input type="hidden" id="color" name="color" value="green"></input>
+                    <!-- <button type="button" name="red" class="red catg-color selected"></button> -->
+                    <button type="button" name="green" class="green catg-color selected"></button>
+                    <button type="button" name="blue" class="blue catg-color"></button>
+                    <button type="button" name="purple" class="purple catg-color"></button>
+                    <button type="button" name="orange" class="orange catg-color"></button>
+                    <input type="submit" value="Add Category" class="eventbtn catg-up red">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="pop-up-catg del-catg">
+        <div class="box">
+            <div class="del-catg-box">
+                <div class="del-catg-title">Delete Category?</div>
+                <div class="del-catg-btn">
+                    <div class="del-div"><a href="#" class="diabtn del-catg-btn red">Delete</a> </div>
+                    <div class="cancel-div"><a href="#" class="diabtn cancel-btn red">Cancel</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories hidden -->
+    <div class="categories-list"></div>
+    <script>
+        webshim.polyfill("forms forms-ext");
     </script>
 </body>
 
