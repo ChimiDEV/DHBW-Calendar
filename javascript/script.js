@@ -8,8 +8,152 @@ var currMonthGlobal = currDateGlobal.getMonth();
 var reqDate = new Date(currDateGlobal);
 
 // Functions
+// Calls Events and creates the event boxes
+var eventsCall = function () {
+    $.ajax({
+        url: "http://host.bisswanger.com/dhbw/calendar.php",
+        data: {
+            user: "6334355",
+            action: "list",
+            format: "json"
+        },
+        dataType: "json",
+        success: function (data) {
+            var i,
+                eventElements = data.events.events.length;
+
+            // Sort Events by Date
+            data.events.events.sort(function (a, b) {
+                a = new Date(a.start);
+                b = new Date(b.start);
+                return a > b ? 1 : a < b ? -1 : 0;
+            });
+
+            $('#eventlist li').remove();
+            $(".hiddenevent-list").empty();
+            for (i = 0; i < eventElements; i++) {
+                var eventProp = data.events.events,
+                    id = eventProp[i].id,
+                    title = eventProp[i].title,
+                    eventLocation = eventProp[i].location,
+                    eventAllDay = eventProp[i].allday,
+                    start = new Date(eventProp[i].start),
+                    startHour = start.getUTCHours(),
+                    startMinute = start.getUTCMinutes(),
+                    startTime = checkData(startHour) + ":" + checkData(startMinute),
+                    end = new Date(eventProp[i].end),
+                    endHour = end.getUTCHours(),
+                    endMinute = end.getUTCMinutes(),
+                    endTime = "until " + checkData(endHour) + ":" + checkData(endMinute) + ", ",
+                    d = checkData(start.getUTCDate()),
+                    month = start.getUTCMonth(),
+                    year = start.getUTCFullYear(),
+                    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    date = " | " + d + "." + months[month] + " " + year,
+                    startHidden = year + "-" + checkData((month + 1)) + "-" + d,
+                    color = ["red border-red", "green border-green", "blue border-blue", "purple border-purple", "orange border-orange", "nocolor border-nocolor"],
+                    img = eventProp[i].imageurl;
+                //colorID = Math.floor(Math.random() * 6);
+                if (eventProp[i].categories.length == 1) {
+                    var str = eventProp[i].categories[0].name;
+                    var catg = str.split("_");
+                    var colorCatg = catg[1];
+                    switch (colorCatg) {
+                    case "red":
+                        var colorID = 0;
+                        break;
+                    case "green":
+                        var colorID = 1;
+                        break;
+                    case "blue":
+                        var colorID = 2;
+                        break;
+                    case "purple":
+                        var colorID = 3;
+                        break;
+                    case "orange":
+                        var colorID = 4;
+                        break;
+                    default:
+                        var colorID = 5;
+                    };
+                } else {
+                    var colorID = 5;
+                }
+
+
+                //Creates the Eventboxes
+                $('<div>').attr("id", title).text(startHidden + "_" + id).addClass(color[colorID]).appendTo(".hiddenevent-list");
+                $('<div>').attr("id", "Img-" + id + "").text(img).appendTo(".hiddenevent-list");
+                $('<li>').attr('id', id).appendTo('#eventlist');
+                $('<div>').attr('class', 'eventbox ' + color[colorID]).attr('id', idDiv).appendTo('#' + id + '');
+                if (eventAllDay == 0) {
+                    $('<div>').attr('class', 'time-event').text(startTime).appendTo('#' + idDiv + '');
+                }
+                $('<div>').attr('class', 'seperator-event').appendTo('#' + idDiv + '');
+                $('<div>').attr('class', 'information-event').attr('id', idInf).appendTo('#' + idDiv + '');
+                $('<span>').attr('class', 'title-event').text(title).appendTo('#' + idInf + '');
+                $('<span>').attr('class', 'date-event').text(date).appendTo('#' + idInf + '');
+                $('<br>').appendTo('#' + idInf + '');
+                if (eventAllDay == 0) {
+                    $('<span>').attr('class', 'timeend-event').text(endTime).appendTo('#' + idInf + '');
+                } else {
+                    $('<span>').attr('class', 'timeend-event').text("All Day, ").appendTo('#' + idInf + '');
+                }
+                $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#' + idInf + '');
+
+                idDiv++;
+                idInf--;
+            }
+            upcomingList();
+
+        }
+    });
+}
+
+// List categories
+var listCats = function () {
+    $.ajax({
+        type: "GET",
+        url: "http://host.bisswanger.com/dhbw/calendar.php",
+        data: {
+            user: "6334355",
+            format: "json",
+            action: "list-categories"
+        },
+        dataType: "json",
+        success: function (data) {
+            $(".categories-list").empty();
+            var catgLength = data.categories.categories.length;
+            for (i = 0; i < catgLength; i++) {
+                var catgID = data.categories.categories[i].id;
+                var str = data.categories.categories[i].name;
+                var catg = str.split("_");
+                var name = catg[0];
+                var color = catg[1];
+                $("<div>").attr("id", catgID).addClass(color).text(name).appendTo(".categories-list");
+            }
+        }
+    });
+
+    setTimeout(function () {
+        $(".catg-list").empty();
+        var children = $(".categories-list").children().length;
+        for (i = 0; i < children; i++) {
+            var name = $(".categories-list").children().eq(i).text();
+            var color = $(".categories-list").children().eq(i).attr("class");
+            var id = $(".categories-list").children().eq(i).attr("id");
+            /* <div class="catg"><div class="catg-list-color red" ></div><div class="catg-list-name">Important</div></div> */
+            $("<div>").addClass("catg-" + i).appendTo(".catg-list");
+            $("<div>").addClass("catg-list-color " + color).attr("id", id).text("✖").appendTo(".catg-" + i);
+            $("<div>").addClass("catg-list-name").text(name).appendTo(".catg-" + i);
+        }
+
+    }, 150);
+}
+
 // Event PopUp - Shows all information of the Event
-var eventPopUp = function (id, img, e) {
+var eventPopUp = function (id, img, e, imgURL) {
     var index = $('#' + id + '').index();
     var str = $('#' + id + '').children("div").attr("class");
     var color = str.split(" ");
@@ -69,7 +213,7 @@ var eventPopUp = function (id, img, e) {
             }
 
 
-
+            // Eventbox Creation
             $('.event-up').addClass("border-" + color[1]);
             $('<div>').addClass("eventid").text(id).appendTo(".event-up");
             $('<div>').addClass("eventdate").text(dateHidden).appendTo(".event-up");
@@ -99,13 +243,14 @@ var eventPopUp = function (id, img, e) {
             $('.delimg-event').addClass(color[1]);
             $('.catg-event').addClass(color[1]);
             $('.edit-event').addClass(color[1]);
-            //console.log(img);
             if (img == 0) {
                 $(".img-event").show();
                 $(".delimg-event").hide();
             } else {
                 $(".img-event").hide();
                 $(".delimg-event").show();
+
+                $("<img>").attr("src", imgURL).addClass("img-event-prev").appendTo(".event-img a");
             }
 
             if ($("#category").text() == "None") {
@@ -146,85 +291,9 @@ var eventPopUp = function (id, img, e) {
     });
 }
 
-// For Dates and Hours below 10: Add a '0'
-var checkData = function (i) {
-    return (i < 10) ? "0" + i : i;
-};
-
-// Checks if the next/prev Btn is active or disabled
-var checkButton = function (sizeLi) {
-    if ($("#eventlist li").children().eq(sizeLi - 1).is(":visible")) {
-        $("#next-btn").removeClass("active");
-        $("#next-btn").addClass("disabled");
-    } else {
-        $("#next-btn").removeClass("disabled");
-        $("#next-btn").addClass("active");
-    }
-
-    if ($("#eventlist li").children().eq(0).is(":visible")) {
-        $("#prev-btn").removeClass("active");
-        $("#prev-btn").addClass("disabled");
-    } else {
-        $("#prev-btn").removeClass("disabled");
-        $("#prev-btn").addClass("active");
-    }
-
-};
-
-// Hides all li-elements with index over 5 and checks the btns
-var upcomingList = function () {
-    var $lis = $("#eventlist li").hide();
-    $lis.slice(0, 5).show();
-    var sizeLi = $lis.length;
-    var x = 5,
-        start = 0;
-    checkButton(sizeLi);
-    $('#next-btn').click(function (e) {
-        e.preventDefault();
-        if (start + x < sizeLi) {
-            $lis.slice(start, start + x).hide();
-            start += x;
-            $lis.slice(start, start + x).show();
-            checkButton(sizeLi);
-        }
-    });
-    $('#prev-btn').click(function (e) {
-        e.preventDefault();
-        if (start - x >= 0) {
-            $lis.slice(start, start + x).hide();
-            start -= x;
-            $lis.slice(start, start + x).show();
-            checkButton(sizeLi);
-        }
-    });
-}
-
-// Clock Function
-var clock = function () {
-    var date = new Date(),
-        year = date.getFullYear(),
-        month = date.getMonth(),
-        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        d = checkData(date.getDate()),
-        day = date.getDay(),
-        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        h = checkData(date.getHours()),
-        m = checkData(date.getMinutes());
-
-    $('#day').text(d);
-    $('#time').text(h + ":" + m);
-    $('#name-day').text(days[day] + ',');
-    $('#month-year').text(months[month] + ' ' + year);
-
-    t = setTimeout(function () {
-        clock()
-    }, 500);
-}
-
 // Create event
 var createEvent = function () {
     var myEvent = $("#create-form :input").serializeArray();
-    console.log(myEvent);
     if (myEvent.length == 9) { //All-Day is checked
         var title = myEvent[0].value,
             location = myEvent[5].value,
@@ -251,12 +320,9 @@ var createEvent = function () {
     var intEnd = parseInt(myEvent[3].value);
     if ((intStart > intEnd) && allday == 0) {
         alert("Start cannot be greater than end");
-        intStart = 0;
-        intEnd = 0;
 
-    } else if (eventDate < currDate) {
+    } else if (eventDate < currDate && allday == 0) {
         alert("Start cannot be in the past");
-
     } else {
         $.ajax({
             type: "POST",
@@ -279,9 +345,11 @@ var createEvent = function () {
                 $('.create-event').fadeOut(700);
                 $('#overlay').removeClass('blur-in');
                 $('#overlay').addClass('blur-out');
+                eventsCall();
             }
         });
         eventsCall();
+        $("#today-btn").trigger("click");
     }
 }
 
@@ -300,9 +368,7 @@ var delEvent = function () {
             format: "json",
             id: eventId
         },
-        success: function (data) {
-            //console.log(data);
-        }
+        success: function (data) {}
     });
 
     $('.show-event').fadeOut(700);
@@ -318,14 +384,19 @@ var delEvent = function () {
         $('#event-web').removeClass(classes);
         $('.event-allday').show();
         $('.event-time').show();
+        $('.event-time').empty();
         $('.del-event').removeClass(color[1]);
         $('.img-event').removeClass(color[1]);
         $('.delimg-event').removeClass(color[1]);
         $('.catg-event').removeClass(color[1]);
         $('.delcatg-event').removeClass(color[1]);
         $('.edit-event').removeClass(color[1]);
+        eventsCall();
+        $("#today-btn").trigger("click");
+
     }, 700);
-    eventsCall();
+
+
 }
 
 // Edit Event 
@@ -408,7 +479,7 @@ var editEvent = function () {
     $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
 
 
-
+    // Editor Creation
     switch (color[2]) {
     case "red":
         $("<input>").attr("type", "submit").attr("value", "Submit").addClass("eventbtn change-event red").appendTo(".event-buttons");
@@ -495,7 +566,6 @@ var editEvent = function () {
     $(document).on("submit", ".editor", function (event) {
         event.preventDefault();
         var edEvent = $("#edit-form :input").serializeArray();
-        console.log(edEvent);
         var id = $(".eventid").text();
         var title = edEvent[0].value,
             location = edEvent[1].value,
@@ -541,13 +611,13 @@ var editEvent = function () {
                 },
                 dataType: "json",
                 success: function (msg) {
-                    console.log(msg);
                     $(".eventid").remove();
                     $(".eventdate").remove();
                     $(".show-event").fadeOut(700);
                     $('#overlay').removeClass('blur-in');
                     $('#overlay').addClass('blur-out');
                     eventsCall();
+                    $("#today-btn").trigger("click");
                     edEvent = [];
 
                     setTimeout(function () {
@@ -716,9 +786,12 @@ var addCatg = function () {
             dataType: "json",
             success: function (msg) {
                 eventsCall();
+                $("#today-btn").trigger("click");
             }
         });
     });
+    eventsCall();
+    $("#today-btn").trigger("click");
     $("#category-form").trigger("submit");
     $('.close-button').trigger("click");
 }
@@ -741,18 +814,17 @@ var delCatgEvent = function () {
         dataType: "json",
         success: function (msg) {
             $(".close-button").trigger("click");
-            // listCats(); --- Page reload, because PopUp didn't work with dynamic created List...
             eventsCall();
+            $("#today-btn").trigger("click");
         }
     });
 
 }
 
-// Upload Image -- NOT READY
-var uploadImg = function () {
+// Upload Image
+var preUploadImg = function () {
     $(".edit-event").removeClass().addClass("eventbtn not-active notactive ed");
     $(".del-event").removeClass().addClass("eventbtn not-active1 notactive del");
-    $(".img-event").removeClass().addClass("eventbtn not-active notactive img");
     $(".delimg-event").removeClass().addClass("eventbtn not-active notactive dimg");
     $(".catg-event").removeClass().addClass("eventbtn not-active notactive ct");
     $(".eventimg-up").show();
@@ -771,152 +843,54 @@ var uploadImg = function () {
     });
 }
 
-// Calls Events and creates the event boxes
-var eventsCall = function () {
-    $.ajax({
-        url: "http://host.bisswanger.com/dhbw/calendar.php",
-        data: {
-            user: "6334355",
-            action: "list",
-            format: "json"
-        },
-        dataType: "json",
-        success: function (data) {
-            var i,
-                eventElements = data.events.events.length;
+var uploadImg = function (eventId) {
+    $('#upload-img').click(function (e) {
+        e.preventDefault();
+        var fileData = $('#img-file').prop('files')[0];
+        var sizeFileKB = fileData.size / 1024;
+        var nameFile = fileData.name;
+        var extension = nameFile.split('.').pop();
 
-            // Sort Events by Date
-            data.events.events.sort(function (a, b) {
-                a = new Date(a.start);
-                b = new Date(b.start);
-                return a > b ? 1 : a < b ? -1 : 0;
+        if (sizeFileKB > 500) {
+            alert("Maximum file size exceeded (500kb)");
+        } else if (extension == "jpg" || extension == "png" || extension == "jpeg") {
+            var formData = new FormData();
+            formData.append('file', fileData);
+            $.ajax({
+                url: 'http://host.bisswanger.com/dhbw/calendar.php?action=upload-image&user=6334355&format=json&id=' + eventId,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                type: 'post',
+                success: function (msg) {
+                    eventsCall();
+                }
             });
-
-            $('#eventlist li').remove();
-            for (i = 0; i < eventElements; i++) {
-                var eventProp = data.events.events,
-                    id = eventProp[i].id,
-                    title = eventProp[i].title,
-                    eventLocation = eventProp[i].location,
-                    eventAllDay = eventProp[i].allday,
-                    start = new Date(eventProp[i].start),
-                    startHour = start.getUTCHours(),
-                    startMinute = start.getUTCMinutes(),
-                    startTime = checkData(startHour) + ":" + checkData(startMinute),
-                    end = new Date(eventProp[i].end),
-                    endHour = end.getUTCHours(),
-                    endMinute = end.getUTCMinutes(),
-                    endTime = "until " + checkData(endHour) + ":" + checkData(endMinute) + ", ",
-                    d = checkData(start.getUTCDate()),
-                    month = start.getUTCMonth(),
-                    year = start.getUTCFullYear(),
-                    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    date = " | " + d + "." + months[month] + " " + year,
-                    startHidden = year + ", " + (month + 1) + ", " + d,
-                    color = ["red border-red", "green border-green", "blue border-blue", "purple border-purple", "orange border-orange", "nocolor border-nocolor"];
-                //colorID = Math.floor(Math.random() * 6);
-                if (eventProp[i].categories.length == 1) {
-                    var str = eventProp[i].categories[0].name;
-                    var catg = str.split("_");
-                    var colorCatg = catg[1];
-                    switch (colorCatg) {
-                    case "red":
-                        var colorID = 0;
-                        break;
-                    case "green":
-                        var colorID = 1;
-                        break;
-                    case "blue":
-                        var colorID = 2;
-                        break;
-                    case "purple":
-                        var colorID = 3;
-                        break;
-                    case "orange":
-                        var colorID = 4;
-                        break;
-                    default:
-                        var colorID = 5;
-                    };
-                } else {
-                    var colorID = 5;
-                }
-
-
-                //Creates the Eventboxes
-                $('<li>').attr('id', id).addClass(startHidden).appendTo('#eventlist');
-                $('<div>').attr('class', 'eventbox ' + color[colorID]).attr('id', idDiv).appendTo('#' + id + '');
-                if (eventAllDay == 0) {
-                    $('<div>').attr('class', 'time-event').text(startTime).appendTo('#' + idDiv + '');
-                }
-                $('<div>').attr('class', 'seperator-event').appendTo('#' + idDiv + '');
-                $('<div>').attr('class', 'information-event').attr('id', idInf).appendTo('#' + idDiv + '');
-                $('<span>').attr('class', 'title-event').text(title).appendTo('#' + idInf + '');
-                $('<span>').attr('class', 'date-event').text(date).appendTo('#' + idInf + '');
-                $('<br>').appendTo('#' + idInf + '');
-                if (eventAllDay == 0) {
-                    $('<span>').attr('class', 'timeend-event').text(endTime).appendTo('#' + idInf + '');
-                } else {
-                    $('<span>').attr('class', 'timeend-event').text("All Day, ").appendTo('#' + idInf + '');
-                }
-                $('<span>').attr('class', 'location-event').text(eventLocation).appendTo('#' + idInf + '');
-
-                idDiv++;
-                idInf--;
-            }
-            upcomingList();
-
+            $(".close-button").trigger("click");
+        } else {
+            alert("Invalid file type! (Only jpg and png)");
         }
     });
+    $("#upload-img").trigger("click");
+
 }
 
-// Locks Time to 0:00 for allday  
-var allDayLocker = function () {
-    $("#start").val("00:00").attr("readonly", !$('#start').attr('readonly'));
-    $("#end").val("00:00").attr("readonly", !$('#end').attr('readonly'));
-    $(".edit-starttime").val("00:00").attr("readonly", !$(".edit-starttime").attr('readonly'));
-    $(".edit-endtime").val("00:00").attr("readonly", !$(".edit-endtime").attr('readonly'));
-}
-
-// List categories
-var listCats = function () {
+// Delete image
+var delImg = function (eventId) {
     $.ajax({
-        type: "GET",
         url: "http://host.bisswanger.com/dhbw/calendar.php",
         data: {
             user: "6334355",
+            action: "delete-image",
             format: "json",
-            action: "list-categories"
+            id: eventId
         },
-        dataType: "json",
-        success: function (data) {
-            $(".categories-list").empty();
-            var catgLength = data.categories.categories.length;
-            for (i = 0; i < catgLength; i++) {
-                var catgID = data.categories.categories[i].id;
-                var str = data.categories.categories[i].name;
-                var catg = str.split("_");
-                var name = catg[0];
-                var color = catg[1];
-                $("<div>").attr("id", catgID).addClass(color).text(name).appendTo(".categories-list");
-            }
+        success: function (msg) {
+            eventsCall();
         }
     });
-
-    setTimeout(function () {
-        $(".catg-list").empty();
-        var children = $(".categories-list").children().length;
-        for (i = 0; i < children; i++) {
-            var name = $(".categories-list").children().eq(i).text();
-            var color = $(".categories-list").children().eq(i).attr("class");
-            var id = $(".categories-list").children().eq(i).attr("id");
-            /* <div class="catg"><div class="catg-list-color red" ></div><div class="catg-list-name">Important</div></div> */
-            $("<div>").addClass("catg-" + i).appendTo(".catg-list");
-            $("<div>").addClass("catg-list-color " + color).attr("id", id).text("✖").appendTo(".catg-" + i);
-            $("<div>").addClass("catg-list-name").text(name).appendTo(".catg-" + i);
-        }
-
-    }, 150);
+    $(".close-button").trigger("click");
 }
 
 // Calendar Creation 
@@ -964,6 +938,8 @@ var createCalendar = function (y, m, d) {
                     $("." + tmp).closest(".tc-daycell").addClass("currday-cell");
                 }
 
+                fillCalendar(fucYear, fucMonth, tmp);
+
                 day++;
             }
             tmp++;
@@ -973,19 +949,109 @@ var createCalendar = function (y, m, d) {
 
 var clearCalendar = function () {
     $(".tc-day").empty();
+    $(".0").empty();
     $(".tc-day").removeClass("currday")
     $(".tc-daycell").removeClass("currday-cell")
 }
 
-var fillCalendar = function () {
+var fillCalendar = function (y, m, d) {
     setTimeout(function () {
-        $("#eventlist li").each(function () {
-            var str = $(this).attr("class");
-            console.log(str);
-            eventDate = new Date(str)
-            console.log(eventDate);
-        });
-    }, 150);
+        var size = $(".hiddenevent-list div").length;
+        var calDate = new Date(y, m, d);
+        for (i = 0; i < size; i++) {
+            var str = $(".hiddenevent-list").children().eq(i).text();
+            var info = str.split("_");
+            var color = $(".hiddenevent-list").children().eq(i).attr("class");
+            var eventTitle = $(".hiddenevent-list").children().eq(i).attr("id");
+            var eventDate = new Date(info[0]);
+            if (calDate.getDate() == eventDate.getDate() && calDate.getMonth() == eventDate.getMonth()) {
+                $("<div>").text(eventTitle).addClass("cal-event " + color).attr("id", info[1]).appendTo("." + d);
+            }
+        }
+    }, 200);
+}
+
+// Locks Time to 0:00 for allday  
+var allDayLocker = function () {
+    $("#start").val("00:00").attr("readonly", !$('#start').attr('readonly'));
+    $("#end").val("00:00").attr("readonly", !$('#end').attr('readonly'));
+    $(".edit-starttime").val("00:00").attr("readonly", !$(".edit-starttime").attr('readonly'));
+    $(".edit-endtime").val("00:00").attr("readonly", !$(".edit-endtime").attr('readonly'));
+}
+
+// For Dates and Hours below 10: Add a '0'
+var checkData = function (i) {
+    return (i < 10) ? "0" + i : i;
+};
+
+// Checks if the next/prev Btn is active or disabled
+var checkButton = function (sizeLi) {
+    if ($("#eventlist li").children().eq(sizeLi - 1).is(":visible")) {
+        $("#next-btn").removeClass("active");
+        $("#next-btn").addClass("disabled");
+    } else {
+        $("#next-btn").removeClass("disabled");
+        $("#next-btn").addClass("active");
+    }
+
+    if ($("#eventlist li").children().eq(0).is(":visible")) {
+        $("#prev-btn").removeClass("active");
+        $("#prev-btn").addClass("disabled");
+    } else {
+        $("#prev-btn").removeClass("disabled");
+        $("#prev-btn").addClass("active");
+    }
+
+};
+
+// Hides all li-elements with index over 5 and checks the btns
+var upcomingList = function () {
+    var $lis = $("#eventlist li").hide();
+    $lis.slice(0, 5).show();
+    var sizeLi = $lis.length;
+    var x = 5,
+        start = 0;
+    checkButton(sizeLi);
+    $('#next-btn').click(function (e) {
+        e.preventDefault();
+        if (start + x < sizeLi) {
+            $lis.slice(start, start + x).hide();
+            start += x;
+            $lis.slice(start, start + x).show();
+            checkButton(sizeLi);
+        }
+    });
+    $('#prev-btn').click(function (e) {
+        e.preventDefault();
+        if (start - x >= 0) {
+            $lis.slice(start, start + x).hide();
+            start -= x;
+            $lis.slice(start, start + x).show();
+            checkButton(sizeLi);
+        }
+    });
+}
+
+// Clock Function
+var clock = function () {
+    var date = new Date(),
+        year = date.getFullYear(),
+        month = date.getMonth(),
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        d = checkData(date.getDate()),
+        day = date.getDay(),
+        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        h = checkData(date.getHours()),
+        m = checkData(date.getMinutes());
+
+    $('#day').text(d);
+    $('#time').text(h + ":" + m);
+    $('#name-day').text(days[day] + ',');
+    $('#month-year').text(months[month] + ' ' + year);
+
+    t = setTimeout(function () {
+        clock()
+    }, 500);
 }
 
 // Main Function -> Starts when Document is ready
@@ -994,10 +1060,10 @@ var main = function () {
     var Mat = 6334355;
     $("#user").append(user + " // Matrikelnummer: " + Mat);
 
-    // initiliaze Clock
+    // Initiliaze Clock
     clock();
 
-    // Activate Eventlistner for alldaylocker
+    // Activate Eventlistener for alldaylocker
     $("#allday").click(function (e) {
         allDayLocker();
     });
@@ -1032,26 +1098,27 @@ var main = function () {
         $('.add-catg').fadeOut(700);
         $('#overlay').removeClass('blur-in');
         $('#overlay').addClass('blur-out');
-        e.stopPropagation();
-    });
-
-    // Calls the Event Pop Up function
-    $("#eventlist").on("click", "li", function (e) {
-        e.preventDefault();
-        var id = $(this).attr("id");
-        var img;
-        if ($(this).css('background-image') != 'none') {
-            img = 1;
-        } else {
-            img = 0;
-        }
-        eventPopUp(id, img, e);
     });
 
     /* SERVER COMMUNICATION */
     // Eventliste und Categories abrufen
     eventsCall();
     listCats();
+
+    // Eventlistener: Event Pop Up
+    $("#eventlist").on("click", "li", function (e) {
+        e.preventDefault();
+        var id = $(this).attr("id");
+        var selector = "Img-" + id;
+        var imgURL = $("#" + selector).text();
+        var img = 0;
+        if (imgURL.length > 1) {
+            img = 1;
+        } else {
+            img = 0;
+        }
+        eventPopUp(id, img, e, imgURL);
+    });
 
     // Eventlistener: Create Event
     $('#create-form').submit(function (e) {
@@ -1071,15 +1138,98 @@ var main = function () {
         editEvent();
     });
 
-    // Removes classes, delayed to fade out
+    // Eventlistener: Upload Image
+    var action_img = 1;
+    $(".img-event").click(function (e) {
+        e.preventDefault();
+        var eventId = $(".eventid").text();
+        if (action_img == 1) {
+            action_img++;
+            preUploadImg();
+        } else {
+            uploadImg(eventId);
+            setTimeout(function () {
+                location.reload(); // Img wouldn't show up...
+            }, 100);
+
+        }
+    });
+
+    // Eventlistener: Delete Image
+    $(".delimg-event").click(function (e) {
+        e.preventDefault();
+        var eventId = $(".eventid").text();
+        delImg(eventId);
+    });
+
+    // Eventlistener: Bigger Preview
+    $(".event-img a").click(function (e) {
+        e.preventDefault();
+        var img = $(".img-event-prev").attr("src");
+        $("#img-big").attr("src", img);
+        $("#overlay-img").fadeIn(700);
+        $("#overlay-img-content").fadeIn(700);
+    });
+
+    // Eventlistener: Close Preview
+    $("#img-big").click(function (e) {
+        $("#overlay-img").fadeOut(700);
+        $("#overlay-img-content").fadeOut(700);
+        setTimeout(function () {
+            $("#img-big").attr("src", " ");
+        }, 700);
+    });
+
+
+    // Eventlistener: Create Category
+    $("#create-category").click(function (e) {
+        e.preventDefault();
+        createCatg();
+
+    });
+
+    // Fade in and Eventlistener: Delete Category
+    setTimeout(function () { // Timeout --- Waits for loading 
+        $(".catg-list-color").click(function (e) {
+            e.preventDefault();
+            $('.del-catg').fadeIn(1000);
+            $('#overlay').removeClass('blur-out');
+            $('#overlay').addClass('blur-in');
+
+            var catgId = $(this).attr("id");
+            delCatg(catgId);
+        });
+    }, 150);
+
+    // Eventlistener: Add Category to Event
+    var action_catg = 1;
+    $(".catg-event").click(function (e) {
+        e.preventDefault();
+        if (action_catg == 1) {
+            action_catg++;
+            fillSelectionCatg();
+        } else {
+            addCatg();
+        }
+    });
+
+
+    // Eventlistener: Delete Category from event
+    $(".delcatg-event").click(function (e) {
+        e.preventDefault();
+        delCatgEvent();
+    });
+
+    // Eventlistener: Removes classes, delayed to fade out
     $('.close-button').click(function (e) {
         e.preventDefault();
         setTimeout(function () {
+
             $(".change-event").remove();
             $(".edit-event").show();
             $(".event-catg").show();
             $("#category").empty();
-            $(".ed").removeClass().addClass("eventbtn editevent-event");
+            $(".ed").removeClass().addClass("eventbtn edit-event");
             $(".img").removeClass().addClass("eventbtn img-event");
             $(".dimg").removeClass().addClass("eventbtn delimg-event");
             $(".ct").removeClass().addClass("eventbtn catg-event");
@@ -1111,58 +1261,14 @@ var main = function () {
             $(".event-status").show();
             $("#statusNew").remove();
 
+            $(".event-img").empty();
+
 
             $("#event-web").show();
             $(".edit-page").remove();
 
-        }, 700);
-    });
-
-    //Eventlistener: Upload Image
-    $(".img-event").click(function (e) {
-        e.preventDefault();
-        uploadImg();
-
-    });
-
-    // Eventlistener: Create Category
-    $("#create-category").click(function (e) {
-        e.preventDefault();
-        createCatg();
-
-    });
-
-    // Fade in and Eventlistener: Delete Category
-    setTimeout(function () { // Timeout --- Waits for loading 
-        $(".catg-list-color").click(function (e) {
-            e.preventDefault();
-            $('.del-catg').fadeIn(1000);
-            $('#overlay').removeClass('blur-out');
-            $('#overlay').addClass('blur-in');
-
-            var catgId = $(this).attr("id");
-            delCatg(catgId);
-        });
-    }, 150);
-
-    // Add Category to Event
-    var action = 1;
-
-    $(".catg-event").click(function (e) {
-        if (action == 1) {
-            e.preventDefault();
-            action++;
-            fillSelectionCatg();
-        } else {
-            e.preventDefault();
-            addCatg();
-        }
-    });
-
-    $('.close-button').click(function (e) {
-        e.preventDefault();
-        setTimeout(function () {
-            action = 1;
+            action_catg = 1;
+            action_img = 1;
             $(".add-event-catg").hide();
             $(".ed").removeClass().addClass("eventbtn edit-event");
             $(".img").removeClass().addClass("eventbtn img-event");
@@ -1172,29 +1278,22 @@ var main = function () {
         }, 700);
     });
 
+    /* CALENDER CREATION */
 
-    // Delete Category from event
-    $(".delcatg-event").click(function (e) {
-        e.preventDefault();
-        delCatgEvent();
-    });
-
-    // initialize calendar
+    // Initialize calendar
     createCalendar(currYearGlobal, currMonthGlobal, currDayGlobal);
-    fillCalendar();
 
-    // Set calendar back to current month
+    // Eventlistener: Today Button
+    // Sets calendar back to current month
     $("#today-btn").click(function (e) {
         e.preventDefault();
-        console.log(reqDate);
         currDateGlobal = new Date();
         reqDate = new Date();
-        console.log(reqDate);
         clearCalendar();
         createCalendar(currYearGlobal, currMonthGlobal, currDayGlobal);
     });
 
-    // Next or Prev Month
+    // Eventlistener: Next or Prev Month
     $("#next-month-btn").click(function (e) {
         e.preventDefault();
         var reqMonth = reqDate.getMonth() + 1;
@@ -1215,6 +1314,13 @@ var main = function () {
         clearCalendar();
         createCalendar(reqYear, reqMonth, reqDate.getDate());
 
+    });
+
+    // Close pop ups with Escape
+    $(document).keyup(function (e) {
+        if (e.keyCode == 27) { // Escape key maps to keycode `27`
+            $(".close-button").trigger("click");
+        }
     });
 
 };

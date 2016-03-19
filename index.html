@@ -1,4 +1,7 @@
 <!doctype html>
+<!-- For too long Eventnames in the boxes I used "overflow: hidden", therefore:
+ If you only see a Time and no Title, then the Title was too long. I didn't find any good solution for it right now.
+However you can find the overflow prop in styles.css ".eventbox" -->
 <html>
 
 <head>
@@ -13,16 +16,15 @@
 
 <body>
     <div id="overlay" class="cover blur-in">
-
         <!-- Header -->
         <div class="header">
-            <div id="logo"><img src="img/cal_logo.png"></img>
+            <div id="logo"><img src="img/cal_logo.png" alt="Logo">
             </div>
             <div id="user"></div>
             <div id="today"><a class="btn" id="today-btn" href="#">Today</a></div>
             <div id="seperator"></div>
             <div id="create-event"><a class="btn" id="create-event-btn" href="#">Create Event</a></div>
-            <div id="seperator"></div>
+            <div id="seperator1"></div>
             <div id="create-category"><a class="btn" id="create-categroy-btn" href="#">Add Category</a></div>
         </div>
 
@@ -63,64 +65,148 @@
                 <div class="calender-widget">
                     <div id="calendar">
                         <table class="table-calender">
-                            <tr>
+                            <tr class="tc-header">
                                 <td class="prev-month"><a href='#' class="prev-month-btn" id="prev-month-btn"> &lt; </a></td>
                                 <th class="tc-monthtag" colspan="5"><span class="tc-currmonth"></span> <span class="tc-curryear"></span></th>
-                                <td class="next-month" ><a href='#' class="next-month-btn active" id="next-month-btn"> &gt; </a></td>
+                                <td class="next-month"><a href='#' class="next-month-btn active" id="next-month-btn"> &gt; </a></td>
                             </tr>
                             <tr>
-                                <td class="tc-daytag"><div class="daytag-inner">MON</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">TUE</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">WED</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">THU</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">FRI</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">SAT</div></td>
-                                <td class="tc-daytag"><div class="daytag-inner">SUN</div></td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">MON</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">TUE</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">WED</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">THU</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">FRI</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">SAT</div>
+                                </td>
+                                <td class="tc-daytag">
+                                    <div class="daytag-inner">SUN</div>
+                                </td>
                             </tr>
                             <tr class="tc-row-0">
-                                <td class="tc-daycell"><div class="tc-day 0"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 1"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 2"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 3"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 4"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 5"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 6"></div></td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 0"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 1"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 2"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 3"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 4"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 5"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 6"></div>
+                                </td>
                             </tr>
                             <tr class="tc-row-1">
-                                <td class="tc-daycell"><div class="tc-day 7"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 8"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 9"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 10"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 11"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 12"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 13"></div></td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 7"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 8"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 9"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 10"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 11"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 12"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 13"></div>
+                                </td>
                             </tr>
                             <tr class="tc-row-2">
-                                <td class="tc-daycell"><div class="tc-day 14"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 15"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 16"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 17"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 18"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 19"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 20"></div></td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 14"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 15"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 16"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 17"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 18"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 19"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 20"></div>
+                                </td>
                             </tr>
                             <tr class="tc-row-3">
-                                <td class="tc-daycell"><div class="tc-day 21"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 22"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 23"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 24"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 25"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 26"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 27"></div></td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 21"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 22"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 23"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 24"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 25"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 26"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 27"></div>
+                                </td>
                             </tr>
                             <tr class="tc-row-4">
-                                <td class="tc-daycell"><div class="tc-day 28"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 29"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 30"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 31"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 32"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 33"></div></td>
-                                <td class="tc-daycell"><div class="tc-day 34"></div></td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 28"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 29"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 30"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 31"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 32"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 33"></div>
+                                </td>
+                                <td class="tc-daycell">
+                                    <div class="tc-day 34"></div>
+                                </td>
                             </tr>
                         </table>
 
@@ -145,17 +231,17 @@
 
     <!-- Pop Up Dialog boxes -->
     <!-- Create event -->
-    <div class="pop-up create-event" id>
+    <div class="pop-up create-event">
         <div class="box">
             <a href="#" class="close-button">&#10006;</a>
             <div class="event-creator">
                 <div class="event-header-show border-red"><span class="event-title-show">Create Event</span></div>
-                <form id="create-form" action="">
+                <form id="create-form">
                     Eventname:
                     <input type="text" name="title" placeholder="Eventname" maxlength="50" autofocus required>
                     <br> Date:
+                    <!-- Placeholder for Firefox, "ERROR" in Validator -->
                     <input type="date" name="date" value="" placeholder="Doubleclick: Datepicker" required>
-                    <!-- <input type="date" class="datepicker" name="date" value="2016-01-01" required> <br> -->
                     Time:
                     <input type="time" id="start" name="time-start" value="00:00" required>
                     <input type="time" id="end" name="time-end" value="00:00" required>
@@ -187,17 +273,21 @@
     <div class="pop-up show-event">
         <div class="box event-up">
             <a href="#" class="close-button">&#10006;</a>
-            <form class="editor" id="edit-form" action="">
+            <form class="editor" id="edit-form">
                 <div class="event-information">
                     <div class="event-header">
                         <span class="event-title"></span>
                         <span class="event-location"></span>
                         <span class="event-date">30.February 2016</span>
                     </div>
+                    <div class="event-status"></div>
                     <div class="event-catg"><a href="#" class="delcatg-event">&#10006; </a>
                         <div id="category"></div>
                     </div>
-                    <div class="event-status"></div>
+                    <div class="event-img">
+                        <a href=""> </a>
+                    </div>
+
                     <div class="event-org"><span id="eventorganizer-span">Organizer: </span>
                         <div class="event-organizer"></div>
                     </div>
@@ -218,14 +308,14 @@
                 </div>
             </form>
             <div class="eventimg-up">
-                <form id="img-up" class="up" action="">
+                <form id="img-up" class="up">
                     <span id="eventimg-span">Image: </span>
-                    <input type="file" name="file"></input>
-                    <input type="submit" value="Upload" class="eventbtn imgup-event red"></input>
+                    <input type="file" id="img-file" name="img-file">
+                    <button id="upload-img">Upload</button>
                 </form>
             </div>
             <div class="add-event-catg">
-                <form id="category-form" action="">
+                <form id="category-form">
                     <span id="category-span">Category: </span>
                     <select name="category-select" id="input-category">
                     </select>
@@ -234,6 +324,7 @@
         </div>
     </div>
 
+    <!-- Category Pop up -->
     <div class="pop-up add-catg">
         <div class="box">
             <a href="#" class="close-button">&#10006;</a>
@@ -241,11 +332,11 @@
                 <div class="event-header-catg border-red"><span class="event-title-catg">Create Category</span></div>
                 <form class="editor" id="catg-form" action="#">
                     <span class="category-name">Name: </span>
-                    <input type="text" name="category" maxlength="24" required></input>
+                    <input type="text" name="category" maxlength="24" required>
                     <br>
-                    <input type="hidden" id="color" name="color" value="green"></input>
-                    <!-- <button type="button" name="red" class="red catg-color selected"></button> -->
-                    <button type="button" name="green" class="green catg-color selected"></button>
+                    <input type="hidden" id="color" name="color" value="red">
+                    <button type="button" name="red" class="red catg-color selected"></button>
+                    <button type="button" name="green" class="green catg-color"></button>
                     <button type="button" name="blue" class="blue catg-color"></button>
                     <button type="button" name="purple" class="purple catg-color"></button>
                     <button type="button" name="orange" class="orange catg-color"></button>
@@ -255,6 +346,7 @@
         </div>
     </div>
 
+    <!-- Delete category Pop up -->
     <div class="pop-up-catg del-catg">
         <div class="box">
             <div class="del-catg-box">
@@ -267,8 +359,16 @@
         </div>
     </div>
 
-    <!-- Categories hidden -->
+    <!-- Bigger Image Preview -->
+    <div id="overlay-img"></div>
+    <div id="overlay-img-content">
+        <img id="img-big" src="#" alt="Preview">
+    </div>
+
+    <!-- Hidden -->
     <div class="categories-list"></div>
+    <div class="hiddenevent-list"></div>
+
     <script>
         webshim.polyfill("forms forms-ext");
     </script>
